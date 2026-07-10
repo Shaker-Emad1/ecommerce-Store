@@ -1,0 +1,8 @@
+node_modules
+dist
+test-results
+.vite
+.vite-temp
+npm-debug.log*
+README.md
+ATTRIBUTIONS.md

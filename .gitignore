@@ -1,0 +1,42 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+google-credentials.json
+*.pfx
+*.key
+*.pem
+
+# Node / frontend artifacts
+Frontend/node_modules/
+Frontend/dist/
+Frontend/test-results/
+Frontend/playwright-report/
+Frontend/.vite/
+Frontend/.vite-temp/
+
+# .NET / launcher artifacts
+**/bin/
+**/obj/
+*.user
+*.suo
+*.cache
+*.pdb
+*.exe
+*.dll
+
+# Logs and runtime files
+*.log
+logs/
+tmp/
+temp/
+
+# Local tooling
+.vs/
+.vscode/
+.idea/
+
+# Local data / uploads / backups
+backup/
+**/wwwroot/uploads/

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ASBrandStore.Api/ASBrandStore.Api.csproj" />
+  <Project Path="ASBrandStore.Application/ASBrandStore.Application.csproj" />
+  <Project Path="ASBrandStore.Domain/ASBrandStore.Domain.csproj" />
+  <Project Path="ASBrandStore.Infrastructure/ASBrandStore.Infrastructure.csproj" />
+</Solution>

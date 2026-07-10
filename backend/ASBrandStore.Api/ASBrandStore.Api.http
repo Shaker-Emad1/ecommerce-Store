@@ -1,0 +1,6 @@
+@ASBrandStore.Api_HostAddress = http://localhost:5262
+
+GET {{ASBrandStore.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
