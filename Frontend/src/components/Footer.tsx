@@ -10,6 +10,19 @@ export function Footer() {
     <footer style={{ background: DARK_BG, borderTop: `1px solid rgba(212,175,55,0.08)` }}>
       <div className="max-w-7xl mx-auto px-4 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
+          {/* Developer credit — above logo */}
+          <p
+            className="text-sm font-semibold mb-3 tracking-wide"
+            style={{
+              background: `linear-gradient(90deg, ${GOLD}, rgba(212,175,55,0.6))`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              letterSpacing: "0.03em",
+            }}
+          >
+            Crafted with ❤️ by Eng. Shaker Emad
+          </p>
           <div className="flex items-center mb-4">
             <img
               src="/logo.png"
