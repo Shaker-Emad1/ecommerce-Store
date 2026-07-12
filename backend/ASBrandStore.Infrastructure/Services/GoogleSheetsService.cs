@@ -29,7 +29,7 @@ public class GoogleSheetsService : IGoogleSheetsService
     public async Task ExportOrderAsync(Order order)
     {
         var webhookUrl = _config["GoogleSheetsSettings:WebhookUrl"];
-        var credentialsPath = _config["GoogleSheetsSettings:CredentialJsonPath"];
+        var credentialsJson = _config["GOOGLE_SHEETS_CREDENTIALS"] ?? _config["GoogleSheetsSettings:CredentialsJson"];
         var spreadsheetId = _config["GoogleSheetsSettings:SpreadsheetId"];
         var sheetName = _config["GoogleSheetsSettings:SheetName"] ?? "Orders";
 
@@ -72,23 +72,22 @@ public class GoogleSheetsService : IGoogleSheetsService
             }
         }
 
-        // 2. Official Google Sheets API mode
-        if (!string.IsNullOrEmpty(credentialsPath) && !string.IsNullOrEmpty(spreadsheetId))
+        // 2. Official Google Sheets API mode from environment-provided JSON
+        if (!string.IsNullOrEmpty(credentialsJson) && !string.IsNullOrEmpty(spreadsheetId))
         {
             try
             {
-                string resolvedPath = Path.IsPathRooted(credentialsPath) 
-                    ? credentialsPath 
-                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, credentialsPath);
+                var json = credentialsJson.Trim();
+                if (!json.StartsWith("{", StringComparison.Ordinal))
+                {
+                    json = Encoding.UTF8.GetString(Convert.FromBase64String(json));
+                }
 
-                if (File.Exists(resolvedPath))
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
                 {
                     GoogleCredential credential;
-                    using (var stream = new FileStream(resolvedPath, FileMode.Open, FileAccess.Read))
-                    {
-                        credential = GoogleCredential.FromStream(stream)
-                            .CreateScoped(SheetsService.Scope.Spreadsheets);
-                    }
+                    credential = GoogleCredential.FromStream(stream)
+                        .CreateScoped(SheetsService.Scope.Spreadsheets);
 
                     var service = new SheetsService(new BaseClientService.Initializer
                     {
@@ -122,10 +121,6 @@ public class GoogleSheetsService : IGoogleSheetsService
                     var appendRequest = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
                     appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
                     await appendRequest.ExecuteAsync();
-                }
-                else
-                {
-                    Console.WriteLine($"[Google Sheets API Warning] Credentials file not found at: {resolvedPath}");
                 }
             }
             catch (Exception ex)

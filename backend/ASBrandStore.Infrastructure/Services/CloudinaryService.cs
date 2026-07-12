@@ -15,13 +15,9 @@ public class CloudinaryService : ICloudinaryService
 
     public CloudinaryService(IConfiguration config)
     {
-        // Priority 1: direct environment variables (CLOUDINARY_CLOUD_NAME, etc.)
-        var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME")
-                        ?? config["CloudinarySettings:CloudName"];
-        var apiKey    = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY")
-                        ?? config["CloudinarySettings:ApiKey"];
-        var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET")
-                        ?? config["CloudinarySettings:ApiSecret"];
+        var cloudName = config["CLOUDINARY_CLOUD_NAME"] ?? config["CloudinarySettings:CloudName"];
+        var apiKey = config["CLOUDINARY_API_KEY"] ?? config["CloudinarySettings:ApiKey"];
+        var apiSecret = config["CLOUDINARY_API_SECRET"] ?? config["CloudinarySettings:ApiSecret"];
 
         if (string.IsNullOrWhiteSpace(cloudName) ||
             string.IsNullOrWhiteSpace(apiKey)    ||
@@ -29,8 +25,7 @@ public class CloudinaryService : ICloudinaryService
         {
             throw new InvalidOperationException(
                 "Cloudinary credentials are not configured. " +
-                "Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET " +
-                "environment variables (or the CloudinarySettings section in appsettings.json).");
+                "Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.");
         }
 
         var account = new Account(cloudName, apiKey, apiSecret);

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -16,29 +19,24 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // 1. Add HttpClient
         services.AddHttpClient();
 
-        // 2. Add DbContext
-        var rawConnection = Environment.GetEnvironmentVariable("DATABASE_URL")
-            ?? configuration.GetConnectionString("DefaultConnection")
-            ?? "Host=localhost;Database=asbrandstore;Username=postgres;Password=postgres;Pooling=true;";
-
+        var rawConnection = ResolveRequiredSetting(
+            configuration["DATABASE_URL"] ?? configuration.GetConnectionString("DefaultConnection"),
+            "DATABASE_URL",
+            "Database connection string");
         var connectionString = ResolvePostgresConnectionString(rawConnection);
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString, b => b.MigrationsAssembly("ASBrandStore.Api")));
 
-        // Register Database Context Interface
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-        // 3. Register Core Security and Integration Services
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<ICloudinaryService, CloudinaryService>();
         services.AddSingleton<IWhatsAppService, WhatsAppService>();
         services.AddSingleton<IGoogleSheetsService, GoogleSheetsService>();
 
-        // 4. Configure Authentication using JWT Bearer
         var secret = ResolveRequiredSetting(configuration["JwtSettings:Secret"], "JWT_SECRET", "JWT Secret");
         var issuer = configuration["JwtSettings:Issuer"] ?? "ASBrandStore";
         var audience = configuration["JwtSettings:Audience"] ?? "ASBrandStore";
@@ -79,14 +77,32 @@ public static class DependencyInjection
             try
             {
                 var uri = new Uri(input);
-                var userInfo = uri.UserInfo.Split(':');
-                var username = userInfo[0];
-                var password = userInfo.Length > 1 ? userInfo[1] : "";
+                var userInfo = uri.UserInfo.Split(':', 2);
+                var username = userInfo.Length > 0 ? Uri.UnescapeDataString(userInfo[0]) : "";
+                var password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "";
                 var host = uri.Host;
                 var port = uri.Port > 0 ? uri.Port : 5432;
-                var database = uri.AbsolutePath.TrimStart('/');
+                var database = Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/'));
 
-                return $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;Pooling=true;";
+                var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Host"] = host,
+                    ["Port"] = port.ToString(CultureInfo.InvariantCulture),
+                    ["Database"] = database,
+                    ["Username"] = username,
+                    ["Password"] = password
+                };
+
+                foreach (var pair in ParseQueryString(uri.Query))
+                {
+                    properties[NormalizeConnectionStringKey(pair.Key)] = pair.Value;
+                }
+
+                properties.TryAdd("SSL Mode", "Require");
+                properties.TryAdd("Trust Server Certificate", "true");
+                properties.TryAdd("Pooling", "true");
+
+                return string.Join(";", properties.Select(pair => $"{pair.Key}={pair.Value}")) + ";";
             }
             catch (Exception ex)
             {
@@ -96,6 +112,43 @@ public static class DependencyInjection
         }
 
         return input;
+    }
+
+    private static IEnumerable<KeyValuePair<string, string>> ParseQueryString(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            yield break;
+        }
+
+        var trimmed = query.TrimStart('?');
+        foreach (var segment in trimmed.Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parts = segment.Split('=', 2);
+            var key = Uri.UnescapeDataString(parts[0]);
+            var value = parts.Length > 1 ? Uri.UnescapeDataString(parts[1]) : string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                yield return new KeyValuePair<string, string>(key, value);
+            }
+        }
+    }
+
+    private static string NormalizeConnectionStringKey(string key)
+    {
+        return key.Trim().ToLowerInvariant() switch
+        {
+            "sslmode" => "SSL Mode",
+            "ssl mode" => "SSL Mode",
+            "trust_server_certificate" => "Trust Server Certificate",
+            "trust server certificate" => "Trust Server Certificate",
+            "channel_binding" => "Channel Binding",
+            "search_path" => "Search Path",
+            _ => string.Join(" ", key
+                .Split(new[] { '_', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(part => char.ToUpperInvariant(part[0]) + part[1..]))
+        };
     }
 
     private static string ResolveRequiredSetting(string? configuredValue, string environmentVariable, string settingName)

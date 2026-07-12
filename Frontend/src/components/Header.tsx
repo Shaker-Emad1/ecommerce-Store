@@ -29,15 +29,12 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
 
   return (
     <header className="sticky top-0 z-50" style={{ background: "rgba(15,15,15,0.97)", backdropFilter: "blur(24px)", borderBottom: `1px solid rgba(212,175,55,0.12)` }}>
-      {/* Announcement bar — single inline line, wraps gracefully on mobile */}
+      {/* Announcement bar */}
       <div
         className="text-center py-1.5 text-xs text-gray-400 border-b px-3 leading-snug"
         style={{ borderColor: "rgba(212,175,55,0.08)", background: "rgba(212,175,55,0.03)" }}
       >
         🚚 شحن مجاني للطلبات فوق {threshold} ج.م &nbsp;|&nbsp; <span style={{ color: GOLD }}>تواصل: {phone}</span>
-        <span style={{ color: "rgba(212,175,55,0.45)", fontSize: "0.6rem", letterSpacing: "0.02em" }}>
-          &nbsp;|&nbsp;
-        </span>
       </div>
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
         <button onClick={() => go("/")} className="flex items-center shrink-0">
