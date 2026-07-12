@@ -46,20 +46,16 @@ builder.Services.AddCors(options =>
         if (allowedOrigins is { Length: > 0 })
         {
             policy.WithOrigins(allowedOrigins)
-                .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+
             return;
         }
 
-        if (builder.Environment.IsDevelopment())
-        {
-            policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-            return;
-        }
-
-        policy.SetIsOriginAllowed(_ => false);
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
