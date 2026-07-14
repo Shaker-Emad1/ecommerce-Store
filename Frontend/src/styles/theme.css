@@ -214,6 +214,10 @@
     font-size: 0.9375rem;
   }
 
+  .hero-slider-arrow {
+    display: none;
+  }
+
   .product-card-mobile {
     border-radius: 1rem;
   }

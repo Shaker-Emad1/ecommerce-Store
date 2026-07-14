@@ -1,16 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { GOLD } from "../../store/constants";
 import { GoldBtn } from "./GoldBtn";
 import { BannerDto } from "../../services/bannerService";
 
+const SWIPE_THRESHOLD = 40;
+
 export function HeroSlider({ banners, setPage }: { banners: BannerDto[]; setPage?: (p: string) => void }) {
   const [cur, setCur] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchDeltaX = useRef(0);
+
   useEffect(() => {
     if (banners.length === 0) return;
     const t = setInterval(() => setCur((c) => (c + 1) % banners.length), 4500);
     return () => clearInterval(t);
   }, [banners]);
+
+  const showPrevious = () => setCur((c) => (c - 1 + banners.length) % banners.length);
+  const showNext = () => setCur((c) => (c + 1) % banners.length);
+
+  const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+    touchDeltaX.current = 0;
+  };
+
+  const onTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    touchDeltaX.current = (e.touches[0]?.clientX ?? touchStartX.current) - touchStartX.current;
+  };
+
+  const onTouchEnd = () => {
+    if (touchStartX.current === null) return;
+
+    if (Math.abs(touchDeltaX.current) >= SWIPE_THRESHOLD) {
+      if (touchDeltaX.current < 0) {
+        showNext();
+      } else {
+        showPrevious();
+      }
+    }
+
+    touchStartX.current = null;
+    touchDeltaX.current = 0;
+  };
 
   if (banners.length === 0) {
     return (
@@ -21,7 +54,13 @@ export function HeroSlider({ banners, setPage }: { banners: BannerDto[]; setPage
   const s = banners[cur];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl" style={{ height: "clamp(260px, 50vw, 500px)", background: "#111" }}>
+    <div
+      className="hero-slider relative overflow-hidden rounded-2xl"
+      style={{ height: "clamp(260px, 50vw, 500px)", background: "#111" }}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {banners.map((sl, i) => (
         <div key={sl.id} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === cur ? 1 : 0 }}>
           <img src={sl.imageUrl} alt={sl.title} className="w-full h-full object-cover" />
@@ -46,10 +85,10 @@ export function HeroSlider({ banners, setPage }: { banners: BannerDto[]; setPage
         ))}
       </div>
 
-      <button onClick={() => setCur((c) => (c - 1 + banners.length) % banners.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center" style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}>
+      <button onClick={showPrevious} className="hero-slider-arrow hero-slider-arrow-prev absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center" style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}>
         <ChevronRight size={18} className="text-white" />
       </button>
-      <button onClick={() => setCur((c) => (c + 1) % banners.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center" style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}>
+      <button onClick={showNext} className="hero-slider-arrow hero-slider-arrow-next absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center" style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(8px)" }}>
         <ChevronLeft size={18} className="text-white" />
       </button>
     </div>
