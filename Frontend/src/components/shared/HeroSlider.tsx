@@ -35,12 +35,12 @@ export function HeroSlider({ banners, setPage }: { banners: BannerDto[]; setPage
             <span className="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4" style={{ background: "rgba(212,175,55,0.18)", color: GOLD, border: `1px solid rgba(212,175,55,0.3)` }}>{s.badge}</span>
           )}
           <h1 className="text-3xl md:text-5xl font-black text-white mb-3 leading-tight">{s.title}</h1>
-          <p className="text-gray-300 mb-8 text-base md:text-lg">{s.subtitle}</p>
-          <GoldBtn onClick={() => { setPage?.("products"); window.scrollTo(0, 0); }} size="lg">{s.ctaText}</GoldBtn>
+          <p className="text-gray-300 mb-5 sm:mb-8 text-base md:text-lg">{s.subtitle}</p>
+          <GoldBtn className="hero-slider-cta" onClick={() => { setPage?.("products"); window.scrollTo(0, 0); }} size="lg">{s.ctaText}</GoldBtn>
         </div>
       </div>
 
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="hero-slider-dots absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
         {banners.map((_, i) => (
           <button key={i} onClick={() => setCur(i)} className="rounded-full transition-all duration-300" style={{ width: i === cur ? 28 : 12, height: 12, background: i === cur ? GOLD : "rgba(255,255,255,0.25)" }} />
         ))}

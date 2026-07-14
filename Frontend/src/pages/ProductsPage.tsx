@@ -82,7 +82,7 @@ export function ProductsPage() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <ProductSkeleton key={i} />)}
         </div>
       ) : error ? (
@@ -91,7 +91,7 @@ export function ProductsPage() {
         <div className="text-center py-20 text-gray-500">لا توجد منتجات مطابقة حالياً</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {productsList.map((p) => <ProductCard key={p.id} p={p} onAdd={addToCart} onView={(p) => navigate(`/product/${p.id}`)} />)}
           </div>
           {totalPages > 1 && (
