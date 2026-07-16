@@ -188,7 +188,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #f7f7f7 0%, #efefef 100%);
+  background: #FFFFFF;
 }
 
 .product-image-stage--dark {
@@ -292,4 +292,5 @@
     line-height: 1.3;
   }
 }
+
 

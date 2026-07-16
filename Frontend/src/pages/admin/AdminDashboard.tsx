@@ -139,7 +139,7 @@ function ImageUploader({ value, onChange, label, required, id }: ImageUploaderPr
             <img
               src={value}
               alt="preview"
-              style={{ width: "100%", height: 120, objectFit: "contain", objectPosition: "center", padding: 12, borderRadius: 10, background: "linear-gradient(180deg, #f7f7f7 0%, #efefef 100%)" }}
+              style={{ width: "100%", height: 120, objectFit: "contain", objectPosition: "center", padding: 12, borderRadius: 10, background: "#FFFFFF" }}
             />
             <button
               type="button"
@@ -294,7 +294,7 @@ function MultiImageUploader({ value, onChange, label, id }: MultiImageUploaderPr
               <img
                 src={url}
                 alt={`gallery-${idx}`}
-                style={{ width: 64, height: 64, objectFit: "contain", objectPosition: "center", padding: 6, borderRadius: 8, border: "1px solid rgba(212,175,55,0.2)", background: "linear-gradient(180deg, #f7f7f7 0%, #efefef 100%)" }}
+                style={{ width: 64, height: 64, objectFit: "contain", objectPosition: "center", padding: 6, borderRadius: 8, border: "1px solid rgba(212,175,55,0.2)", background: "#FFFFFF" }}
               />
               <button
                 type="button"
@@ -1288,4 +1288,5 @@ export function AdminDashboard() {
     </div>
   );
 }
+
 
