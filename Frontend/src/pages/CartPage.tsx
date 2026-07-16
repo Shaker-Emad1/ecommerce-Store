@@ -42,8 +42,8 @@ export function CartPage() {
         <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
             <div key={item.product.id} className="rounded-2xl p-4 flex gap-4" style={{ background: CARD, border: `1px solid rgba(212,175,55,0.08)` }}>
-              <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0" style={{ background: "#111" }}>
-                <img loading="lazy" src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+              <div className="product-image-stage w-24 h-24 rounded-xl overflow-hidden shrink-0">
+                <img loading="lazy" src={item.product.image} alt={item.product.name} className="product-image-stage__img" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start gap-2">
@@ -89,3 +89,4 @@ export function CartPage() {
     </div>
   );
 }
+

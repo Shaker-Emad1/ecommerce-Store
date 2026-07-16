@@ -66,14 +66,14 @@ export function ProductDetailsPage() {
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
         <div className="space-y-4">
-          <div className="rounded-2xl overflow-hidden" style={{ height: "clamp(260px, 60vw, 420px)", background: "#111", border: `1px solid rgba(212,175,55,0.08)` }}>
-            <img loading="lazy" src={productImages[activeImg]} alt={product.name} className="w-full h-full object-cover" />
+          <div className="product-image-stage rounded-2xl overflow-hidden" style={{ height: "clamp(260px, 60vw, 420px)", border: `1px solid rgba(212,175,55,0.08)` }}>
+            <img loading="lazy" src={productImages[activeImg]} alt={product.name} className="product-image-stage__img" />
           </div>
           {productImages.length > 1 && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {productImages.map((img, i) => (
-                <div key={i} onClick={() => setActiveImg(i)} className="rounded-xl overflow-hidden cursor-pointer transition-all" style={{ height: 80, border: `2px solid ${i === activeImg ? GOLD : "rgba(212,175,55,0.1)"}` }}>
-                  <img loading="lazy" src={img} alt="" className="w-full h-full object-cover" />
+                <div key={i} onClick={() => setActiveImg(i)} className="product-image-stage rounded-xl overflow-hidden cursor-pointer transition-all" style={{ height: 80, border: `2px solid ${i === activeImg ? GOLD : "rgba(212,175,55,0.1)"}` }}>
+                  <img loading="lazy" src={img} alt="" className="product-image-stage__img" />
                 </div>
               ))}
             </div>
@@ -163,3 +163,4 @@ export function ProductDetailsPage() {
     </div>
   );
 }
+

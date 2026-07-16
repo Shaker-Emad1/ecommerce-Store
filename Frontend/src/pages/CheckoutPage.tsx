@@ -101,8 +101,8 @@ export function CheckoutPage() {
             <div className="space-y-3 mb-4">
               {cart.map((item) => (
                 <div key={item.product.id} className="flex gap-3">
-                  <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0" style={{ background: "#111" }}>
-                    <img loading="lazy" src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                  <div className="product-image-stage w-11 h-11 rounded-xl overflow-hidden shrink-0">
+                    <img loading="lazy" src={item.product.image} alt={item.product.name} className="product-image-stage__img" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-white font-semibold truncate">{item.product.name}</p>
@@ -131,3 +131,4 @@ export function CheckoutPage() {
     </div>
   );
 }
+

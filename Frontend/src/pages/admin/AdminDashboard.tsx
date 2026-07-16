@@ -139,7 +139,7 @@ function ImageUploader({ value, onChange, label, required, id }: ImageUploaderPr
             <img
               src={value}
               alt="preview"
-              style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 10 }}
+              style={{ width: "100%", height: 120, objectFit: "contain", objectPosition: "center", padding: 12, borderRadius: 10, background: "linear-gradient(180deg, #f7f7f7 0%, #efefef 100%)" }}
             />
             <button
               type="button"
@@ -294,7 +294,7 @@ function MultiImageUploader({ value, onChange, label, id }: MultiImageUploaderPr
               <img
                 src={url}
                 alt={`gallery-${idx}`}
-                style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 8, border: "1px solid rgba(212,175,55,0.2)" }}
+                style={{ width: 64, height: 64, objectFit: "contain", objectPosition: "center", padding: 6, borderRadius: 8, border: "1px solid rgba(212,175,55,0.2)", background: "linear-gradient(180deg, #f7f7f7 0%, #efefef 100%)" }}
               />
               <button
                 type="button"
@@ -790,7 +790,7 @@ export function AdminDashboard() {
                           {products.map((p, i) => (
                             <tr key={p.id} className="hover:bg-white/[0.02] transition-colors" style={{ borderBottom: i < products.length - 1 ? `1px solid rgba(255,255,255,0.03)` : "none" }}>
                               <td className="px-5 py-3.5"><div className="flex items-center gap-3">
-                                <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0" style={{ background: "#111" }}><img loading="lazy" src={p.image} alt={p.name} className="w-full h-full object-cover" /></div>
+                                <div className="product-image-stage w-11 h-11 rounded-xl overflow-hidden shrink-0"><img loading="lazy" src={p.image} alt={p.name} className="product-image-stage__img" /></div>
                                 <span className="text-sm text-white font-semibold">{p.name}</span>
                               </div></td>
                               <td className="px-5 py-3.5 text-sm text-gray-400">{p.categoryName}</td>
@@ -1266,7 +1266,7 @@ export function AdminDashboard() {
                 {activeOrder.items?.map((item, idx) => (
                   <div key={idx} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5">
                     <div className="flex items-center gap-2">
-                      <img loading="lazy" src={item.productImage} className="w-11 h-11 rounded object-cover" alt="" />
+                      <div className="product-image-stage w-11 h-11 rounded overflow-hidden shrink-0"><img loading="lazy" src={item.productImage} className="product-image-stage__img" alt="" /></div>
                       <span className="text-gray-300 font-semibold">{item.productName} × {item.quantity}</span>
                     </div>
                     <span style={{ color: GOLD }}>{item.unitPrice * item.quantity} ج.م</span>
@@ -1288,3 +1288,4 @@ export function AdminDashboard() {
     </div>
   );
 }
+
