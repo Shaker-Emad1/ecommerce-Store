@@ -188,7 +188,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
+  background: var(--background);
 }
 
 .product-image-stage--dark {
