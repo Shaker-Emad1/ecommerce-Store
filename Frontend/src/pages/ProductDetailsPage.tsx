@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Search } from "lucide-react";
 import { StarRating } from "../components/shared/StarRating";
 import { GoldBtn } from "../components/shared/GoldBtn";
 import { SectionTitle } from "../components/shared/SectionTitle";
@@ -77,16 +77,17 @@ export function ProductDetailsPage() {
           <button
             type="button"
             onClick={() => setViewerIndex(activeImg)}
-            className="product-image-stage relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
+            className="product-image-stage product-image-stage--featured relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
             style={{ height: "clamp(260px, 60vw, 420px)", border: "1px solid rgba(212,175,55,0.08)" }}
             aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
           >
-            <img loading="eager" src={productImages[activeImg]} alt={product.name} className="product-image-stage__img" />
+            <img loading="eager" src={productImages[activeImg]} alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
             <span
-              className="absolute bottom-4 left-4 rounded-full px-3 py-1.5 text-xs font-bold text-white"
-              style={{ background: "rgba(15,15,15,0.78)", border: "1px solid rgba(212,175,55,0.14)", backdropFilter: "blur(10px)" }}
+              className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold text-white transition-all duration-200 md:hover:scale-[1.03] md:hover:-translate-y-0.5 active:scale-95"
+              style={{ background: "rgba(15,15,15,0.76)", border: "1px solid rgba(212,175,55,0.18)", boxShadow: "0 12px 28px rgba(0,0,0,0.24)", backdropFilter: "blur(14px)" }}
             >
-              اضغط للتكبير
+              <Search size={13} style={{ color: GOLD }} />
+              تكبير الصورة
             </span>
           </button>
 
