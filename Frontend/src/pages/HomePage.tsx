@@ -42,8 +42,8 @@ export function HomePage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { v: "500+", l: "منتج متاح", Icon: Box },
-            { v: "10,000+", l: "عميل سعيد", Icon: Users },
+            { v: "100+", l: "منتج متاح", Icon: Box },
+            { v: "12,000+", l: "عميل سعيد", Icon: Users },
             { v: "20+", l: "فئة متنوعة", Icon: LayoutGrid },
             { v: "4.9 ★", l: "تقييم العملاء", Icon: Star },
           ].map(({ v, l, Icon }) => (
