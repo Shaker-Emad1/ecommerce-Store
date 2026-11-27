@@ -50,7 +50,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure Decimals for SQL Server
+        // Configure decimal precision (PostgreSQL)
         modelBuilder.Entity<Product>(entity =>
         {
             entity.Property(p => p.Price).HasPrecision(18, 2);
