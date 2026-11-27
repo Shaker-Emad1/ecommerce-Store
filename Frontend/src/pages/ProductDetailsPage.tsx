@@ -8,7 +8,7 @@ import { SectionTitle } from "../components/shared/SectionTitle";
 import { Complementary } from "../components/shared/Complementary";
 import { ProductGallery } from "../components/shared/ProductGallery";
 import { ProductDetailSkeleton } from "../components/shared/Skeleton";
-import { getContact, whatsappLink } from "../shared/contact";
+import { getContact, whatsappLink, WHATSAPP_CONFIRMED } from "../shared/contact";
 import { useOutletContext } from "react-router";
 import { SettingDto } from "../services/settingService";
 import { ShareButton } from "../components/shared/ShareButton";
@@ -196,9 +196,9 @@ export function ProductDetailsPage() {
             </GoldBtn>
           </div>
 
-          <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mb-8 hidden md:flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white" style={{ background: "#25D366" }}>
+          {WHATSAPP_CONFIRMED && <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mb-8 hidden md:flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white" style={{ background: "#25D366" }}>
             <WaIcon /> اطلب عن طريق واتساب
-          </a>
+          </a>}
 
           <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(201,162,74,0.1)" }}>
             <div className="flex" style={{ borderBottom: "1px solid rgba(201,162,74,0.1)" }}>
@@ -275,9 +275,9 @@ export function ProductDetailsPage() {
         <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" variant="cta" className="flex-1 !py-3">
           {product.stock > 0 ? "أضف إلى السلة" : "نفذت الكمية"}
         </GoldBtn>
-        <a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="اطلب عن طريق واتساب" className="flex h-12 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 text-sm font-bold text-white" style={{ background: "#25D366" }}>
+        {WHATSAPP_CONFIRMED && <a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="اطلب عن طريق واتساب" className="flex h-12 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 text-sm font-bold text-white" style={{ background: "#25D366" }}>
           <WaIcon /> واتساب
-        </a>
+        </a>}
       </div>
     </div>
   );

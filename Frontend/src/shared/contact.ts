@@ -13,6 +13,9 @@ const LEGACY_FOOTER_PHONE = "01275414542"; // remove once PHONE is set
 
 const digits = (s: string) => s.replace(/\D/g, "");
 
+/** The WhatsApp order button is shown only once a real number is set above (the API's number is a demo placeholder). */
+export const WHATSAPP_CONFIRMED = WHATSAPP !== null;
+
 export function getContact(settings?: SettingDto | null) {
   const phone = PHONE ?? settings?.contactPhone ?? LEGACY_FOOTER_PHONE;
   const footerPhone = PHONE ?? LEGACY_FOOTER_PHONE;
