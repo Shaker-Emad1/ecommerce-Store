@@ -33,7 +33,7 @@ public class OrdersController : BaseApiController
     }
 
     [HttpGet("{id}")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<OrderDto>> GetOrder(int id)
     {
         var order = await _orderService.GetOrderByIdAsync(id);
