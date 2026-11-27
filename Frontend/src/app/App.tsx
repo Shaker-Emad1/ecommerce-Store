@@ -40,6 +40,7 @@ export default function App() {
                   <Route index element={<HomePage />} />
                   <Route path="categories" element={<CategoriesPage />} />
                   <Route path="products" element={<ProductsPage />} />
+                  <Route path="category/:id/:slug?" element={<ProductsPage />} />
                   <Route path="product/:id" element={<ProductDetailsPage />} />
                   <Route path="cart" element={<CartPage />} />
                   <Route path="checkout" element={<CheckoutPage />} />

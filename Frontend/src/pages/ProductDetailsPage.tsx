@@ -12,7 +12,7 @@ import { useCart } from "../store/cartContext";
 import { GOLD } from "../store/constants";
 import { Product, mapDtoToProduct } from "../store/types";
 import { productService } from "../services/productService";
-import { usePageTitle } from "../shared/usePageTitle";
+import { usePageMeta } from "../shared/usePageMeta";
 
 export function ProductDetailsPage() {
   const { id } = useParams();
@@ -30,7 +30,16 @@ export function ProductDetailsPage() {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
 
-  usePageTitle(product?.name || "تفاصيل المنتج");
+  usePageMeta({
+    title: product ? `${product.name} - ${product.price} ج.م` : "تفاصيل المنتج",
+    description: product ? `اشتري ${product.name} بسعر ${product.price} ج.م من A.S Brand Store. دفع عند الاستلام وشحن لكل محافظات مصر.` : "تفاصيل المنتج",
+    image: product?.image,
+    jsonLd: product ? {
+      "@context": "https://schema.org", "@type": "Product", name: product.name, image: [product.image, ...productImages].filter(Boolean),
+      description: product.description || product.name, category: product.category,
+      offers: { "@type": "Offer", priceCurrency: "EGP", price: product.price, availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", url: window.location.href },
+    } : null,
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -80,7 +89,7 @@ export function ProductDetailsPage() {
             type="button"
             onClick={() => setViewerIndex(activeImg)}
             className="product-image-stage product-image-stage--featured relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
-            style={{ height: "clamp(260px, 60vw, 420px)", border: "1px solid rgba(212,175,55,0.08)" }}
+            style={{ aspectRatio: "1 / 1", maxHeight: 520, border: "1px solid rgba(212,175,55,0.08)" }}
             aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
           >
             <img loading="eager" src={optimizeImg(productImages[activeImg],900)} fetchPriority="high" alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
@@ -138,7 +147,7 @@ export function ProductDetailsPage() {
           </div>
 
           <div className="mb-6 flex items-end gap-3">
-            <span className="text-4xl font-black" style={{ color: GOLD }}>
+            <span className="text-4xl font-black" style={{ color: "#fff" }}>
               {product.price} ج.م
             </span>
             {product.originalPrice > product.price && (
@@ -275,7 +284,7 @@ export function ProductDetailsPage() {
       {/* Sticky mobile buy bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 px-4 py-3 md:hidden" style={{ background: "rgba(15,15,15,0.96)", borderTop: "1px solid rgba(212,175,55,0.2)", backdropFilter: "blur(8px)" }}>
         <div className="flex flex-col leading-tight">
-          <span className="text-lg font-black" style={{ color: GOLD }}>{product.price} ج.م</span>
+          <span className="text-lg font-black" style={{ color: "#fff" }}>{product.price} ج.م</span>
           {product.originalPrice > product.price && <span className="text-xs text-gray-500 line-through">{product.originalPrice} ج.م</span>}
         </div>
         <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" className="flex-1">

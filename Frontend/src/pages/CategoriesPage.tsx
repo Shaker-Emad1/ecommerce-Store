@@ -1,3 +1,4 @@
+import { categoryPath } from "../shared/slug";
 import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { useState } from "react";
 import { usePageTitle } from "../shared/usePageTitle";
@@ -35,7 +36,7 @@ export function CategoriesPage() {
               <div className="text-red-500 text-xs py-2 text-center">{error}</div>
             ) : (
               categories.map((c) => (
-                <button key={c.id} onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl text-sm transition-all hover:opacity-80 text-right" style={{ background: "rgba(212,175,55,0.05)", border: `1px solid rgba(212,175,55,0.06)` }}>
+                <button key={c.id} onClick={() => { navigate(categoryPath(c)); window.scrollTo(0, 0); }} className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl text-sm transition-all hover:opacity-80 text-right" style={{ background: "rgba(212,175,55,0.05)", border: `1px solid rgba(212,175,55,0.06)` }}>
                   <span className="flex items-center gap-2">
                     <span style={{ color: GOLD }}>{getIconComponent(c.icon, 18)}</span>
                     <span className="text-gray-300">{c.name}</span>
@@ -57,7 +58,7 @@ export function CategoriesPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filtered.map((c) => (
-                <button key={c.id} onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="rounded-2xl overflow-hidden group relative text-right w-full" style={{ height: 220, background: "#111", border: `1px solid rgba(212,175,55,0.1)` }}>
+                <button key={c.id} onClick={() => { navigate(categoryPath(c)); window.scrollTo(0, 0); }} className="rounded-2xl overflow-hidden group relative text-right w-full" style={{ height: 220, background: "#111", border: `1px solid rgba(212,175,55,0.1)` }}>
                   <img loading="lazy" src={optimizeImg(c.imageUrl,640)} decoding="async" alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500" />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,15,15,0.95) 30%, transparent)" }} />
                   <div className="absolute bottom-0 right-0 left-0 p-5">

@@ -47,7 +47,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
         </button>
       </div>
       <div className="product-card-mobile__body flex flex-col flex-1">
-        <p className="text-xs text-gray-500 mb-1">{p.category}</p>
+        <p className="text-xs text-gray-400 mb-1">{p.category}</p>
         <h3 className="product-card-mobile__title font-bold text-white leading-snug mb-2 cursor-pointer hover:text-yellow-400 transition-colors line-clamp-2" onClick={() => onView(p)}>{p.name}</h3>
         <div className="product-card-mobile__rating flex items-center gap-2 mb-3" style={{ minHeight: "1.25rem" }}>
           {p.reviews > 0 ? (
@@ -62,9 +62,9 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
           )}
         </div>
         <div className="product-card-mobile__price flex items-center gap-2 mb-4 mt-auto">
-          <span className="font-black text-lg" style={{ color: GOLD }}>{p.price} ج.م</span>
+          <span className="font-black text-lg text-white">{p.price} ج.م</span>
           {p.originalPrice > p.price && (
-            <span className="text-sm text-gray-500 line-through">{p.originalPrice} ج.م</span>
+            <span className="text-sm text-gray-400 line-through">{p.originalPrice} ج.م</span>
           )}
         </div>
         <button

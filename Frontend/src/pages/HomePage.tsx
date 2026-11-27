@@ -1,6 +1,7 @@
 import { optimizeImg, optimizeSrcSet } from "../shared/img";
-import { Box, Users, LayoutGrid, Star, Truck, Shield, RefreshCw, Award } from "lucide-react";
+import { Truck, Shield, RefreshCw, Award, Banknote, MessageCircle } from "lucide-react";
 import { GOLD } from "../store/constants";
+import { categoryPath } from "../shared/slug";
 import { usePageTitle } from "../shared/usePageTitle";
 
 import { useOutletContext, useNavigate } from "react-router";
@@ -32,6 +33,8 @@ export function HomePage() {
   const { addToCart } = useCart();
   const { categories, banners, featuredProducts, bestSellers, loading, error } = useOutletContext<HomeContext>();
 
+  const deal = [...bestSellers, ...featuredProducts].map(mapDtoToProduct).filter((p) => p.originalPrice > p.price && p.stock > 0).sort((a, b) => (1 - b.price / b.originalPrice) - (1 - a.price / a.originalPrice))[0];
+
   const onView = (p: any) => navigate(`/product/${p.id}`);
 
   return (
@@ -40,18 +43,36 @@ export function HomePage() {
         <HeroSlider banners={banners} setPage={(p) => navigate(p)} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {deal && (
+        <div className="max-w-7xl mx-auto px-4 pt-2 pb-4">
+          <button onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0, 0); }} className="flex w-full items-center gap-4 rounded-2xl p-3 text-right" style={{ background: "#1A1A1A", border: "1px solid rgba(212,175,55,0.3)" }}>
+            <span className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white sm:h-28 sm:w-28">
+              <img src={optimizeImg(deal.image, 240)} alt={deal.name} width={112} height={112} className="h-full w-full object-contain p-1" decoding="async" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="mb-1 inline-block rounded-md px-2 py-0.5 text-xs font-bold text-white" style={{ background: "#dc2626" }}>أعلى خصم الآن -{Math.round((1 - deal.price / deal.originalPrice) * 100)}%</span>
+              <span className="block truncate text-base font-bold text-white sm:text-lg">{deal.name}</span>
+              <span className="mt-1 flex items-baseline gap-2">
+                <span className="text-xl font-black text-white">{deal.price} ج.م</span>
+                <span className="text-sm text-gray-400 line-through">{deal.originalPrice} ج.م</span>
+              </span>
+            </span>
+            <span className="hidden shrink-0 rounded-xl px-5 py-3 text-sm font-bold text-black sm:block" style={{ background: GOLD }}>اشتري الآن</span>
+          </button>
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { v: "100+", l: "منتج متاح", Icon: Box },
-            { v: "12,000+", l: "عميل سعيد", Icon: Users },
-            { v: "20+", l: "فئة متنوعة", Icon: LayoutGrid },
-            { v: "4.9 ★", l: "تقييم العملاء", Icon: Star },
-          ].map(({ v, l, Icon }) => (
-            <div key={l} className="rounded-2xl p-5 flex flex-col items-center text-center" style={{ background: "rgba(26,26,26,0.7)", border: `1px solid rgba(212,175,55,0.1)`, backdropFilter: "blur(12px)" }}>
-              <Icon size={22} style={{ color: GOLD }} className="mb-2" />
-              <div className="text-2xl font-black text-white">{v}</div>
-              <div className="text-xs text-gray-500 mt-0.5">{l}</div>
+            { l: "الدفع عند الاستلام", Icon: Banknote },
+            { l: "شحن لكل المحافظات", Icon: Truck },
+            { l: "منتجات أصلية", Icon: Shield },
+            { l: "تواصل واتساب سريع", Icon: MessageCircle },
+          ].map(({ l, Icon }) => (
+            <div key={l} className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <Icon size={20} className="shrink-0 text-gray-300" />
+              <span className="text-sm font-semibold text-gray-200">{l}</span>
             </div>
           ))}
         </div>
@@ -69,14 +90,11 @@ export function HomePage() {
           <div className="text-center py-10 text-gray-500 text-sm">لا توجد فئات متاحة حالياً</div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((c) => (
-              <button key={c.id} onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="rounded-2xl overflow-hidden group relative" style={{ height: 148, background: "#111", border: `1px solid rgba(212,175,55,0.08)` }}>
-                <img loading="lazy" src={optimizeImg(c.imageUrl,640)} decoding="async" alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-65 group-hover:scale-105 transition-all duration-500" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
-                  <div style={{ color: GOLD }}>{getIconComponent(c.icon)}</div>
-                  <span className="text-white font-bold text-sm">{c.name}</span>
-                  <span className="text-xs text-gray-400">{c.productsCount} منتج</span>
-                </div>
+            {categories.filter((c) => c.productsCount > 0).map((c) => (
+              <button key={c.id} onClick={() => { navigate(categoryPath(c)); window.scrollTo(0, 0); }} className="flex flex-col items-center justify-center gap-2 rounded-2xl py-5 transition-colors hover:bg-white/10" style={{ minHeight: 112, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(212,175,55,0.2)" }}>
+                <span style={{ color: GOLD }}>{getIconComponent(c.icon)}</span>
+                <span className="text-sm font-bold text-white">{c.name}</span>
+                <span className="text-xs text-gray-400">{c.productsCount} منتج</span>
               </button>
             ))}
           </div>
@@ -128,7 +146,7 @@ export function HomePage() {
                 <Icon size={24} style={{ color: GOLD }} />
               </div>
               <h3 className="font-bold text-white mb-2 text-sm">{t}</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">{d}</p>
+              <p className="text-xs text-gray-400 leading-relaxed">{d}</p>
             </div>
           ))}
         </div>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /administrator
+Sitemap: https://a-s-brand-store-2vit.vercel.app/sitemap.xml
