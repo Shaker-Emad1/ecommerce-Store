@@ -11,6 +11,10 @@ type Props = {
   className?: string;     // classes for the <img>
 };
 
+// Photos keep their own proportions; only extreme shapes are boxed (and edge-filled) so nothing is cropped.
+const MIN_RATIO = 0.6;
+const MAX_RATIO = 1.8;
+
 const rgb = (c: number[]) => `rgb(${c[0]},${c[1]},${c[2]})`;
 
 /**
@@ -20,7 +24,7 @@ const rgb = (c: number[]) => `rgb(${c[0]},${c[1]},${c[2]})`;
  */
 export function ProductImage({ src, alt, width, widths, sizes, eager, className = "" }: Props) {
   const [bg, setBg] = useState<string | null>(null);
-  const [cover, setCover] = useState(false);
+  const [ratio, setRatio] = useState(1); // natural width / height
   const [cors, setCors] = useState<"anonymous" | undefined>("anonymous");
   const tried = useRef(false);
 
@@ -29,7 +33,7 @@ export function ProductImage({ src, alt, width, widths, sizes, eager, className 
       const nw = img.naturalWidth, nh = img.naturalHeight;
       if (!nw || !nh) return;
       // Landscape photos would leave tall bars in a portrait card: fill the frame instead.
-      setCover(false);
+      setRatio(nw / nh);
       const c = document.createElement("canvas");
       c.width = 16; c.height = 16;
       const ctx = c.getContext("2d", { willReadFrequently: true });
@@ -55,7 +59,7 @@ export function ProductImage({ src, alt, width, widths, sizes, eager, className 
   };
 
   return (
-    <span className="product-image-frame" style={{ background: bg ?? "#161616" }}>
+    <span className="product-image-frame" style={{ aspectRatio: String(Math.min(Math.max(ratio, MIN_RATIO), MAX_RATIO)), background: bg ?? "#161616" }}>
       <img
         key={cors ?? "plain"}
         src={optimizeImg(src, width)}
@@ -68,8 +72,7 @@ export function ProductImage({ src, alt, width, widths, sizes, eager, className 
         {...(eager ? { fetchPriority: "high" as const } : {})}
         onLoad={(e) => sample(e.currentTarget)}
         onError={() => { if (!tried.current && cors) { tried.current = true; setCors(undefined); } }}
-        style={cover ? { objectFit: "cover" } : undefined}
-        className={`product-image-frame__img ${className}`}
+                className={`product-image-frame__img ${className}`}
       />
     </span>
   );

@@ -104,13 +104,13 @@ export function HomePage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <SectionTitle title="الأكثر مبيعاً" sub="المنتجات الأعلى تقييماً من عملائنا" action="عرض الكل" onAction={() => { navigate("/products"); window.scrollTo(0, 0); }} />
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
             {[1, 2, 3, 4].map((i) => <ProductSkeleton key={i} />)}
           </div>
         ) : bestSellers.length === 0 ? (
           <div className="text-center py-10 text-gray-500 text-sm">لا توجد منتجات متاحة</div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
             {bestSellers.slice(0, 4).map((p) => <ProductCard key={p.id} p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} />)}
           </div>
         )}
@@ -120,13 +120,13 @@ export function HomePage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <SectionTitle title="أحدث المنتجات" sub="وصل حديثاً إلى متجرنا" action="عرض الكل" onAction={() => { navigate("/products"); window.scrollTo(0, 0); }} />
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
             {[1, 2, 3, 4].map((i) => <ProductSkeleton key={i} />)}
           </div>
         ) : featuredProducts.length === 0 ? (
           <div className="text-center py-10 text-gray-500 text-sm">لا توجد منتجات متاحة</div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
             {featuredProducts.slice(0, 4).map((p) => <ProductCard key={p.id} p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} />)}
           </div>
         )}

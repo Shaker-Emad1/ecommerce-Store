@@ -24,10 +24,10 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
 
   return (
     <div
-      className="product-card-mobile rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col"
+      className="product-card-mobile rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col self-start w-full"
       style={{ background: CARD, border: `1px solid rgba(212,175,55,0.1)`, boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
     >
-      <div className="product-card-mobile__image product-image-stage relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
+      <div className="product-card-mobile__image relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
         <ProductImage src={p.image} alt={p.name} width={480} widths={[240, 480, 720]} sizes="(max-width:640px) 50vw, 25vw" />
                 <div className="absolute top-3 right-3 flex flex-col gap-1.5">
           {p.badge && (

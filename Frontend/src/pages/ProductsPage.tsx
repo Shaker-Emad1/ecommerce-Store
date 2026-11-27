@@ -139,7 +139,7 @@ export function ProductsPage() {
 
       <div className="mt-6">
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">{[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <ProductSkeleton key={i} />)}</div>
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">{[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <ProductSkeleton key={i} />)}</div>
         ) : error ? (
           <div className="py-20 text-center text-red-400">{error}</div>
         ) : list.length === 0 ? (
@@ -149,7 +149,7 @@ export function ProductsPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">
               {shown.map((p) => <ProductCard key={p.id} p={p} onAdd={addToCart} onView={(x) => navigate(`/product/${x.id}`)} />)}
             </div>
             {pages > 1 && (

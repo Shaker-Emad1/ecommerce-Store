@@ -89,8 +89,8 @@ export function ProductDetailsPage() {
           <button
             type="button"
             onClick={() => setViewerIndex(activeImg)}
-            className="product-image-stage product-image-stage--featured relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
-            style={{ aspectRatio: "1 / 1", maxHeight: 520, border: "1px solid rgba(212,175,55,0.08)" }}
+            className="relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
+            style={{ border: "1px solid rgba(212,175,55,0.08)" }}
             aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
           >
             <ProductImage src={productImages[activeImg]} alt={product.name} width={900} widths={[480, 900, 1200]} sizes="(max-width:1024px) 100vw, 50vw" eager />
