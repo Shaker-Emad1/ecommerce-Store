@@ -265,8 +265,8 @@ docker compose up --build
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Shaker-Emad1/A-S-Brand-Store.git
-cd A-S-Brand-Store
+git clone https://github.com/Shaker-Emad1/ecommerce-Store.git
+cd ecommerce-Store
 ```
 
 #### 2. Backend setup

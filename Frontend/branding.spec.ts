@@ -6,10 +6,13 @@ async function waitForApp(page: Page) {
   await page.locator("header").waitFor({ timeout: 15000 });
 }
 
+const ADMIN_EMAIL = process.env.E2E_ADMIN_EMAIL ?? "";
+const ADMIN_PASSWORD = process.env.E2E_ADMIN_PASSWORD ?? "";
+
 async function adminLogin(page: Page) {
   await page.goto("/administrator/login");
-  await page.fill("input[type='email']",    "admin@asbrandstore.com");
-  await page.fill("input[type='password']", "***REMOVED***");
+  await page.fill("input[type='email']", ADMIN_EMAIL);
+  await page.fill("input[type='password']", ADMIN_PASSWORD);
   await page.click("button[type='submit']");
   await page.waitForURL("**/administrator/dashboard", { timeout: 15000 });
 }
@@ -24,7 +27,7 @@ test("1. Footer copyright text", async ({ page }) => {
 });
 
 // ─── Announcement Bar ──────────────────────────────────────────
-test("2. Announcement bar — threshold 900 & phone 01275414542", async ({ page }) => {
+test("2. Announcement bar — shows configured threshold & contact phone", async ({ page }) => {
   await waitForApp(page);
   const response = await page.request.get("/api/settings");
   const settings = await response.json();

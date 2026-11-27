@@ -70,8 +70,12 @@ public class OrderService : IOrderService
                 totalItemsPrice += product.Price * itemReq.Quantity;
             }
 
-            // Shipping logic matching frontend (Free above 500, otherwise 50)
-            decimal shippingPrice = totalItemsPrice > 500 ? 0 : 50;
+            // Shipping logic matching frontend: free above the configured store
+            // threshold (Settings.ShippingThreshold, same value the storefront shows),
+            // otherwise a flat 50. Falls back to the Setting entity default (900).
+            var shippingThreshold = (await _context.Settings.AsNoTracking()
+                .FirstOrDefaultAsync())?.ShippingThreshold ?? 900;
+            decimal shippingPrice = totalItemsPrice > shippingThreshold ? 0 : 50;
             decimal grandTotal = totalItemsPrice + shippingPrice;
 
             var order = new Order

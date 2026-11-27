@@ -41,6 +41,15 @@ builder.Services.AddCors(options =>
         .GetSection("CorsSettings:AllowedOrigins")
         .Get<string[]>();
 
+    // Fallback: a single FRONTEND_ORIGIN env var (comma-separated for several),
+    // so hosts like Railway can restrict CORS without config-section binding.
+    var frontendOrigin = builder.Configuration["FRONTEND_ORIGIN"];
+    if ((allowedOrigins is null || allowedOrigins.Length == 0)
+        && !string.IsNullOrWhiteSpace(frontendOrigin))
+    {
+        allowedOrigins = frontendOrigin.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    }
+
     options.AddPolicy("AllowFrontend", policy =>
     {
         if (allowedOrigins is { Length: > 0 })
@@ -52,6 +61,7 @@ builder.Services.AddCors(options =>
             return;
         }
 
+        Console.WriteLine("WARNING: no CORS origins configured (CorsSettings:AllowedOrigins or FRONTEND_ORIGIN); falling back to AllowAnyOrigin. Set FRONTEND_ORIGIN to the storefront URL.");
         policy
             .AllowAnyOrigin()
             .AllowAnyHeader()
