@@ -5,6 +5,7 @@ import { usePageTitle } from "../shared/usePageTitle";
 import { useNavigate } from "react-router";
 import { GOLD, CARD } from "../store/constants";
 import { useCart } from "../store/cartContext";
+import { FreeShippingBar } from "../components/shared/FreeShippingBar";
 import { GoldBtn } from "../components/shared/GoldBtn";
 
 import { useOutletContext } from "react-router";
@@ -15,7 +16,7 @@ export function CartPage() {
   const navigate = useNavigate();
   const { cart, setCart } = useCart();
   const { storeSettings } = useOutletContext<{ storeSettings: SettingDto | null }>();
-  const threshold = storeSettings?.shippingThreshold ?? 900;
+  const threshold = storeSettings?.shippingThreshold ?? 3000;
   const total = cart.reduce((s, i) => s + i.product.price * i.quantity, 0);
   const shipping = total > threshold ? 0 : 50;
 
@@ -75,7 +76,7 @@ export function CartPage() {
               <span className="text-gray-500">الشحن</span>
               <span style={{ color: shipping === 0 ? "#22c55e" : "white" }}>{shipping === 0 ? "مجاني" : `${shipping} ج.م`}</span>
             </div>
-            {total < threshold && <p className="text-xs" style={{ color: GOLD }}>أضف {threshold - total} ج.م للحصول على شحن مجاني</p>}
+            <FreeShippingBar total={total} threshold={threshold} />
           </div>
           <div className="py-4 mb-5" style={{ borderTop: `1px solid rgba(212,175,55,0.08)`, borderBottom: `1px solid rgba(212,175,55,0.08)` }}>
             <div className="flex justify-between font-bold">

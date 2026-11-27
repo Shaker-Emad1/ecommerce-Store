@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Product, CartItem } from "./types";
-import { toast } from "sonner";
 
 interface CartContextType {
   cart: CartItem[];
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   cartCount: number;
-  addToCart: (p: Product) => void;
+  addToCart: (p: Product, opts?: { silent?: boolean }) => void;
+  drawerOpen: boolean;
+  setDrawerOpen: (v: boolean) => void;
   clearCart: () => void;
 }
 
@@ -24,26 +25,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
 
-  const addToCart = (p: Product) => {
+  const addToCart = (p: Product, opts?: { silent?: boolean }) => {
     setCart((prev) => {
       const found = prev.find((i) => i.product.id === p.id);
       return found
         ? prev.map((i) => i.product.id === p.id ? { ...i, quantity: i.quantity + 1 } : i)
         : [...prev, { product: p, quantity: 1 }];
     });
-    toast.success("تمت الإضافة إلى السلة", {
-      description: p.name,
-      duration: 2000,
-      position: "bottom-right",
-    });
+    if (!opts?.silent) setDrawerOpen(true);
   };
 
   const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider value={{ cart, setCart, cartCount, addToCart, clearCart }}>
+    <CartContext.Provider value={{ cart, setCart, cartCount, addToCart, clearCart, drawerOpen, setDrawerOpen }}>
       {children}
     </CartContext.Provider>
   );

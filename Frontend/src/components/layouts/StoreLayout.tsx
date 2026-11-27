@@ -8,6 +8,8 @@ import { productService, ProductDto } from "../../services/productService";
 import { settingService, SettingDto } from "../../services/settingService";
 import { mapDtoToProduct } from "../../store/types";
 import { BG } from "../../store/constants";
+import { CartDrawer } from "../CartDrawer";
+import { BottomNav } from "../BottomNav";
 import { Toaster } from "sonner";
 
 export function StoreLayout() {
@@ -66,11 +68,13 @@ export function StoreLayout() {
         storeSettings={storeSettings}
       />
 
-      <main>
+      <main className="pb-16 md:pb-0">
         <Outlet context={{ categories, banners, featuredProducts, bestSellers, storeSettings, loading, error, searchQuery, setSearchQuery }} />
       </main>
 
-      <Footer />
+      <Footer storeSettings={storeSettings} />
+      <CartDrawer threshold={storeSettings?.shippingThreshold ?? 3000} />
+      <BottomNav />
       <Toaster richColors theme="dark" />
     </div>
   );

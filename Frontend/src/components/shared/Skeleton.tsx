@@ -71,3 +71,24 @@ export function OrderSkeleton() {
     </div>
   );
 }
+
+export function ProductDetailSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-10 animate-pulse" aria-busy="true" aria-label="جاري التحميل">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="space-y-3">
+          <div className="rounded-2xl" style={{ height: 360, background: "#1A1A1A" }} />
+          <div className="grid grid-cols-4 gap-3">{[1, 2, 3, 4].map((i) => <div key={i} className="rounded-xl" style={{ height: 64, background: "#1A1A1A" }} />)}</div>
+        </div>
+        <div className="space-y-4">
+          <div className="h-6 w-20 rounded-lg" style={{ background: "#222" }} />
+          <div className="h-8 w-3/4 rounded" style={{ background: "#222" }} />
+          <div className="h-4 w-40 rounded" style={{ background: "#222" }} />
+          <div className="h-10 w-32 rounded" style={{ background: "#222" }} />
+          <div className="h-12 w-full rounded-xl" style={{ background: "#222" }} />
+          <div className="h-28 w-full rounded-2xl" style={{ background: "#1A1A1A" }} />
+        </div>
+      </div>
+    </div>
+  );
+}

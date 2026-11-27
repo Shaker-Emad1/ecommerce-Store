@@ -4,6 +4,7 @@ import { GOLD, BG } from "../store/constants";
 import { useCart } from "../store/cartContext";
 import { useNavigate } from "react-router";
 import { SearchBox } from "./shared/SearchBox";
+import { getContact } from "../shared/contact";
 import { SettingDto } from "../services/settingService";
 
 export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQuery: string; setSearchQuery: (q: string) => void; storeSettings?: SettingDto | null }) {
@@ -11,8 +12,8 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
   const navigate = useNavigate();
   const { cartCount } = useCart();
 
-  const threshold = storeSettings?.shippingThreshold ?? 900;
-  const phone = storeSettings?.contactPhone ?? "01275414542";
+  const threshold = storeSettings?.shippingThreshold ?? 3000;
+  const phone = getContact(storeSettings).phone;
 
   const nav = [
     { label: "الرئيسية", p: "/" },
@@ -55,7 +56,7 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
         </nav>
 
         <div className="flex items-center gap-2 mr-auto">
-          <button onClick={() => go("/cart")} className="relative p-2 rounded-xl" style={{ background: "rgba(212,175,55,0.08)" }}>
+          <button onClick={() => go("/cart")} aria-label="السلة" className="relative p-2 rounded-xl" style={{ background: "rgba(212,175,55,0.08)" }}>
             <ShoppingCart size={20} style={{ color: GOLD }} />
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs flex items-center justify-center font-black" style={{ background: GOLD, color: BG }}>{cartCount}</span>

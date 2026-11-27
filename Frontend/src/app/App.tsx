@@ -9,6 +9,7 @@ import { AdministratorLayout } from "../components/layouts/AdministratorLayout";
 
 const HomePage = lazy(() => import("../pages/HomePage").then(m => ({ default: m.HomePage })));
 const CategoriesPage = lazy(() => import("../pages/CategoriesPage").then(m => ({ default: m.CategoriesPage })));
+const WishlistPage = lazy(() => import("../pages/WishlistPage").then(m => ({ default: m.WishlistPage })));
 const ProductsPage = lazy(() => import("../pages/ProductsPage").then(m => ({ default: m.ProductsPage })));
 const ProductDetailsPage = lazy(() => import("../pages/ProductDetailsPage").then(m => ({ default: m.ProductDetailsPage })));
 const CartPage = lazy(() => import("../pages/CartPage").then(m => ({ default: m.CartPage })));
@@ -42,6 +43,7 @@ export default function App() {
                   <Route path="products" element={<ProductsPage />} />
                   <Route path="category/:id/:slug?" element={<ProductsPage />} />
                   <Route path="product/:id" element={<ProductDetailsPage />} />
+                  <Route path="wishlist" element={<WishlistPage />} />
                   <Route path="cart" element={<CartPage />} />
                   <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="success" element={<SuccessPage />} />

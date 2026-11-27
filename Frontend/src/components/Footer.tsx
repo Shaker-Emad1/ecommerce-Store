@@ -1,8 +1,11 @@
 import { Instagram, Facebook, Twitter, Phone, MessageCircle, Mail, MapPin } from "lucide-react";
 import { GOLD, DARK_BG } from "../store/constants";
 import { useNavigate } from "react-router";
+import { getContact } from "../shared/contact";
+import { SettingDto } from "../services/settingService";
 
-export function Footer() {
+export function Footer({ storeSettings }: { storeSettings?: SettingDto | null }) {
+  const { footerPhone } = getContact(storeSettings);
   const navigate = useNavigate();
   const go = (p: string) => { navigate(p); window.scrollTo(0, 0); };
 
@@ -63,8 +66,8 @@ export function Footer() {
           <h3 className="font-bold text-white mb-4 text-sm">تواصل معنا</h3>
           <div className="flex flex-col gap-3">
             {[
-              { Icon: Phone, text: "01275414542", ltr: true },
-              { Icon: MessageCircle, text: "واتساب: 01275414542", ltr: false },
+              { Icon: Phone, text: footerPhone, ltr: true },
+              { Icon: MessageCircle, text: `واتساب: ${footerPhone}`, ltr: false },
               { Icon: Mail, text: "info@asbrand.com", ltr: true },
               { Icon: MapPin, text: "القاهرة، مصر", ltr: false },
             ].map(({ Icon, text, ltr }) => (

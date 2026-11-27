@@ -17,6 +17,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
       const next = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
       localStorage.setItem(WK, JSON.stringify(next));
     } catch { /* ignore storage errors */ }
+    window.dispatchEvent(new Event("asb-wishlist"));
     setWished(!wished);
   };
   const lowStock = p.stock > 0 && p.stock <= 5;
