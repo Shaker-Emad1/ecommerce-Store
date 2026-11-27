@@ -1,9 +1,12 @@
 import { test, expect, Page } from "@playwright/test";
 
+const ADMIN_EMAIL = process.env.E2E_ADMIN_EMAIL ?? "";
+const ADMIN_PASSWORD = process.env.E2E_ADMIN_PASSWORD ?? "";
+
 async function adminLogin(page: Page) {
   await page.goto("/administrator/login");
-  await page.fill("input[type='email']",    "admin@asbrandstore.com");
-  await page.fill("input[type='password']", "***REMOVED***");
+  await page.fill("input[type='email']", ADMIN_EMAIL);
+  await page.fill("input[type='password']", ADMIN_PASSWORD);
   await page.click("button[type='submit']");
   await page.waitForURL("**/administrator/dashboard", { timeout: 15000 });
 }
