@@ -17,7 +17,7 @@ export function BottomNav() {
   ];
   return (
     <nav aria-label="التنقل السريع" className="fixed inset-x-0 bottom-0 z-50 flex md:hidden"
-      style={{ background: "rgba(15,15,15,0.98)", borderTop: "1px solid rgba(212,175,55,0.2)", backdropFilter: "blur(12px)", paddingBottom: "env(safe-area-inset-bottom)" }}>
+      style={{ background: "rgba(21,18,16,0.98)", borderTop: "1px solid rgba(201,162,74,0.2)", backdropFilter: "blur(12px)", paddingBottom: "env(safe-area-inset-bottom)" }}>
       {items.map(({ label, p, Icon, n }) => {
         const active = p === "/" ? pathname === "/" : pathname.startsWith(p);
         return (

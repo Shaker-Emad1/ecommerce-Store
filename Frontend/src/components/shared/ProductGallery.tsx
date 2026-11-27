@@ -24,7 +24,7 @@ export function ProductGallery({ images, name, active, onActive, onOpen }: { ima
 
   const zoom = (i: number) => (
     <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold text-white pointer-events-none"
-      style={{ background: "rgba(15,15,15,0.76)", border: "1px solid rgba(212,175,55,0.18)", backdropFilter: "blur(14px)" }}>
+      style={{ background: "rgba(21,18,16,0.76)", border: "1px solid rgba(201,162,74,0.18)", backdropFilter: "blur(14px)" }}>
       <Search size={13} style={{ color: GOLD }} /> تكبير الصورة
     </span>
   );
@@ -32,7 +32,7 @@ export function ProductGallery({ images, name, active, onActive, onOpen }: { ima
   return (
     <div className="space-y-3">
       <div className="relative">
-        <div ref={ref} onScroll={onScroll} className="flex items-start overflow-x-auto rounded-2xl snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ border: "1px solid rgba(212,175,55,0.08)" }}>
+        <div ref={ref} onScroll={onScroll} className="flex items-start overflow-x-auto rounded-2xl snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ border: "1px solid rgba(201,162,74,0.08)" }}>
           {images.map((img, i) => (
             <button key={i} type="button" onClick={() => onOpen(i)} aria-label={`عرض صورة ${name} ${i + 1} من ${images.length}`} className="relative block w-full shrink-0 snap-start snap-always text-right">
               <ProductImage src={img} alt={name} width={900} widths={[480, 900, 1200]} sizes="(max-width:1024px) 100vw, 50vw" eager={i === 0} />
@@ -49,7 +49,7 @@ export function ProductGallery({ images, name, active, onActive, onOpen }: { ima
       {images.length > 1 && (
         <div className="grid grid-cols-4 gap-3">
           {images.map((img, i) => (
-            <button key={i} type="button" onClick={() => onActive(i)} aria-label={`الصورة ${i + 1}`} className="product-image-stage overflow-hidden rounded-xl" style={{ height: 64, border: `2px solid ${i === active ? GOLD : "rgba(212,175,55,0.1)"}` }}>
+            <button key={i} type="button" onClick={() => onActive(i)} aria-label={`الصورة ${i + 1}`} className="product-image-stage overflow-hidden rounded-xl" style={{ height: 64, border: `2px solid ${i === active ? GOLD : "rgba(201,162,74,0.1)"}` }}>
               <img loading="lazy" src={optimizeImg(img, 160)} alt="" className="product-image-stage__img" />
             </button>
           ))}

@@ -31,11 +31,11 @@ export function ShareButton({ id, name, price }: Props) {
     <div className="relative inline-block">
       <button type="button" onClick={share} aria-label="مشاركة المنتج"
         className="flex items-center gap-2 rounded-xl px-4 text-sm font-bold"
-        style={{ minHeight: "2.75rem", border: "1px solid rgba(212,175,55,0.35)", color: GOLD, background: "transparent" }}>
+        style={{ minHeight: "2.75rem", border: "1px solid rgba(201,162,74,0.35)", color: GOLD, background: "transparent" }}>
         <Share2 size={16} /> مشاركة
       </button>
       {open && (
-        <div className="absolute z-30 mt-2 w-56 rounded-xl p-2" style={{ background: "#1a1a1a", border: "1px solid rgba(212,175,55,0.25)", insetInlineStart: 0 }}>
+        <div className="absolute z-30 mt-2 w-56 rounded-xl p-2" style={{ background: "#1a1a1a", border: "1px solid rgba(201,162,74,0.25)", insetInlineStart: 0 }}>
           <a href={`https://wa.me/?text=${encodeURIComponent(`${text}\n${url}`)}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-lg px-3 text-sm text-white hover:bg-white/10" style={{ minHeight: "2.75rem" }}>
             {WHATSAPP_ICON} واتساب

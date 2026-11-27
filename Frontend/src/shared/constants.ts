@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────
 // DESIGN TOKENS — shared by store & administrator
 // ─────────────────────────────────────────────
-export const GOLD = "#D4AF37";
+export const GOLD = "#C9A24A";
 export const LIGHT_GOLD = "#E6D3A3";
-export const BG = "#0F0F0F";
-export const CARD = "#1A1A1A";
+export const BG = "#151210";
+export const CARD = "#1F1B18";
 export const DARK_BG = "#080808";

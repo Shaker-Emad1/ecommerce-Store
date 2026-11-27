@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { GOLD, LIGHT_GOLD, BG } from "../../store/constants";
+import { GOLD, LIGHT_GOLD, BG, CTA_GOLD } from "../../store/constants";
 
 export function GoldBtn({
   children, onClick, variant = "solid", size = "md", className = "", type = "button", disabled = false
 }: {
   children: ReactNode;
   onClick?: () => void;
-  variant?: "solid" | "outline" | "ghost";
+  variant?: "solid" | "outline" | "ghost" | "cta";
   size?: "sm" | "md" | "lg";
   className?: string;
   type?: "button" | "submit";
@@ -16,6 +16,8 @@ export function GoldBtn({
   const base = `inline-flex items-center justify-center gap-2 rounded-xl font-bold transition-all duration-200 cursor-pointer active:scale-95 ${sizes[size]} ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`;
   if (variant === "solid")
     return <button disabled={disabled} type={type} onClick={onClick} className={base} style={{ background: `linear-gradient(135deg, ${GOLD} 0%, ${LIGHT_GOLD} 100%)`, color: BG }}>{children}</button>;
+  if (variant === "cta")
+    return <button disabled={disabled} type={type} onClick={onClick} className={base} style={{ background: CTA_GOLD, color: "#1a1306", boxShadow: "0 6px 20px rgba(242,205,92,0.25)" }}>{children}</button>;
   if (variant === "outline")
     return <button disabled={disabled} type={type} onClick={onClick} className={base} style={{ border: `1.5px solid ${GOLD}`, color: GOLD }}>{children}</button>;
   return <button disabled={disabled} type={type} onClick={onClick} className={`${base} text-gray-400 hover:text-white`}>{children}</button>;

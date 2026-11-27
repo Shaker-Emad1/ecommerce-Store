@@ -20,9 +20,9 @@ const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard").then(m
 
 function AppLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#0F0F0F" }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#151210" }}>
       <div className="text-center">
-        <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin mb-4 mx-auto" style={{ borderColor: "#D4AF37", borderTopColor: "transparent" }} />
+        <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin mb-4 mx-auto" style={{ borderColor: "#C9A24A", borderTopColor: "transparent" }} />
         <p className="text-gray-500 text-sm" style={{ fontFamily: "'Cairo', 'Tajawal', sans-serif" }}>جاري التحميل...</p>
       </div>
     </div>

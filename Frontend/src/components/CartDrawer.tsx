@@ -32,9 +32,9 @@ export function CartDrawer({ threshold }: { threshold: number }) {
       <aside
         role="dialog" aria-modal="true" aria-label="سلة التسوق"
         className="absolute top-0 bottom-0 left-0 flex w-[88%] max-w-sm flex-col transition-transform duration-300 ease-out"
-        style={{ background: "#121212", borderRight: "1px solid rgba(212,175,55,0.2)", transform: drawerOpen ? "translateX(0)" : "translateX(-105%)" }}
+        style={{ background: "#121212", borderRight: "1px solid rgba(201,162,74,0.2)", transform: drawerOpen ? "translateX(0)" : "translateX(-105%)" }}
       >
-        <div className="flex items-center justify-between px-4 py-4" style={{ borderBottom: "1px solid rgba(212,175,55,0.1)" }}>
+        <div className="flex items-center justify-between px-4 py-4" style={{ borderBottom: "1px solid rgba(201,162,74,0.1)" }}>
           <h2 className="font-black text-white text-lg">سلة التسوق</h2>
           <button onClick={close} aria-label="إغلاق" className="flex h-11 w-11 items-center justify-center rounded-xl text-white"><X size={20} /></button>
         </div>
@@ -49,7 +49,7 @@ export function CartDrawer({ threshold }: { threshold: number }) {
             <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
               <FreeShippingBar total={total} threshold={threshold} />
               {cart.map((item) => (
-                <div key={item.product.id} className="flex gap-3 rounded-xl p-3" style={{ background: CARD, border: "1px solid rgba(212,175,55,0.08)" }}>
+                <div key={item.product.id} className="flex gap-3 rounded-xl p-3" style={{ background: CARD, border: "1px solid rgba(201,162,74,0.08)" }}>
                   <img src={optimizeImg(item.product.image, 160)} alt={item.product.name} className="h-16 w-16 shrink-0 rounded-lg object-contain" style={{ background: "#0d0d0d" }} />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
@@ -57,7 +57,7 @@ export function CartDrawer({ threshold }: { threshold: number }) {
                       <button onClick={() => rm(item.product.id)} aria-label="حذف" className="flex h-8 w-8 shrink-0 items-center justify-center text-gray-500 hover:text-red-400"><Trash2 size={15} /></button>
                     </div>
                     <div className="mt-2 flex items-center justify-between">
-                      <div className="flex items-center overflow-hidden rounded-lg" style={{ border: "1px solid rgba(212,175,55,0.2)", background: "#111" }}>
+                      <div className="flex items-center overflow-hidden rounded-lg" style={{ border: "1px solid rgba(201,162,74,0.2)", background: "#191614" }}>
                         <button onClick={() => upd(item.product.id, -1)} aria-label="تقليل" className="flex h-9 w-9 items-center justify-center text-white"><Minus size={13} /></button>
                         <span className="w-7 text-center text-sm font-bold text-white">{item.quantity}</span>
                         <button onClick={() => upd(item.product.id, 1)} aria-label="زيادة" className="flex h-9 w-9 items-center justify-center text-white"><Plus size={13} /></button>
@@ -68,7 +68,7 @@ export function CartDrawer({ threshold }: { threshold: number }) {
                 </div>
               ))}
             </div>
-            <div className="space-y-3 px-4 py-4" style={{ borderTop: "1px solid rgba(212,175,55,0.1)", paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}>
+            <div className="space-y-3 px-4 py-4" style={{ borderTop: "1px solid rgba(201,162,74,0.1)", paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}>
               <div className="flex justify-between font-bold"><span className="text-white">المجموع</span><span className="text-lg" style={{ color: GOLD }}>{total} ج.م</span></div>
               <GoldBtn size="lg" className="w-full" onClick={() => go("/checkout")}>إتمام الطلب</GoldBtn>
               <button onClick={() => go("/cart")} className="w-full py-2 text-sm font-semibold" style={{ color: GOLD }}>عرض السلة</button>

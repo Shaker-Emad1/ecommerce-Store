@@ -5,6 +5,7 @@ import { Minus, Plus, MessageCircle } from "lucide-react";
 import { StarRating } from "../components/shared/StarRating";
 import { GoldBtn } from "../components/shared/GoldBtn";
 import { SectionTitle } from "../components/shared/SectionTitle";
+import { Complementary } from "../components/shared/Complementary";
 import { ProductGallery } from "../components/shared/ProductGallery";
 import { ProductDetailSkeleton } from "../components/shared/Skeleton";
 import { getContact, whatsappLink } from "../shared/contact";
@@ -98,11 +99,11 @@ export function ProductDetailsPage() {
 
         <div>
           <div className="mb-3 flex items-start justify-between">
-            <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: "rgba(212,175,55,0.12)", color: GOLD }}>
+            <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: "rgba(201,162,74,0.12)", color: GOLD }}>
               {product.category}
             </span>
             {product.badge && (
-              <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: GOLD, color: "#0F0F0F" }}>
+              <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: GOLD, color: "#151210" }}>
                 {product.badge}
               </span>
             )}
@@ -150,7 +151,7 @@ export function ProductDetailsPage() {
                     style={{
                       background: swatch,
                       border: `3px solid ${color === swatch ? GOLD : "transparent"}`,
-                      boxShadow: color === swatch ? "0 0 0 2px rgba(212,175,55,0.3)" : "none",
+                      boxShadow: color === swatch ? "0 0 0 2px rgba(201,162,74,0.3)" : "none",
                       outline: "2px solid rgba(255,255,255,0.08)",
                     }}
                   />
@@ -162,7 +163,7 @@ export function ProductDetailsPage() {
           <div className="mb-8">
             <p className="mb-2 text-sm text-gray-500">الكمية</p>
             <div className="flex items-center gap-4">
-              <div className="flex items-center overflow-hidden rounded-xl" style={{ border: "1px solid rgba(212,175,55,0.2)", background: "#111" }}>
+              <div className="flex items-center overflow-hidden rounded-xl" style={{ border: "1px solid rgba(201,162,74,0.2)", background: "#191614" }}>
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-11 w-11 items-center justify-center text-white transition-opacity hover:opacity-60">
                   <Minus size={15} />
                 </button>
@@ -178,7 +179,7 @@ export function ProductDetailsPage() {
           <div className="mb-3"><ShareButton id={product.id} name={product.name} price={product.price} /></div>
 
           <div className="mb-8 flex gap-3">
-            <GoldBtn disabled={product.stock <= 0} onClick={() => { for (let i = 0; i < qty; i += 1) addToCart(product, { silent: i < qty - 1 }); }} size="lg" className="flex-1">
+            <GoldBtn disabled={product.stock <= 0} onClick={() => { for (let i = 0; i < qty; i += 1) addToCart(product, { silent: i < qty - 1 }); }} size="lg" variant="cta" className="flex-1">
               أضف إلى السلة
             </GoldBtn>
             <GoldBtn
@@ -199,8 +200,8 @@ export function ProductDetailsPage() {
             <WaIcon /> اطلب عن طريق واتساب
           </a>
 
-          <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(212,175,55,0.1)" }}>
-            <div className="flex" style={{ borderBottom: "1px solid rgba(212,175,55,0.1)" }}>
+          <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(201,162,74,0.1)" }}>
+            <div className="flex" style={{ borderBottom: "1px solid rgba(201,162,74,0.1)" }}>
               {[{ key: "desc" as const, label: "الوصف" }, { key: "specs" as const, label: "المواصفات" }].map(({ key, label }) => (
                 <button
                   key={key}
@@ -208,7 +209,7 @@ export function ProductDetailsPage() {
                   className="flex-1 py-3 text-sm font-semibold transition-all"
                   style={{
                     color: tab === key ? GOLD : "#666",
-                    background: tab === key ? "rgba(212,175,55,0.07)" : "transparent",
+                    background: tab === key ? "rgba(201,162,74,0.07)" : "transparent",
                     borderBottom: tab === key ? `2px solid ${GOLD}` : "2px solid transparent",
                   }}
                 >
@@ -250,6 +251,8 @@ export function ProductDetailsPage() {
         <div className="py-10 text-center text-xs text-gray-500">لا توجد منتجات مشابهة متوفرة</div>
       )}
 
+      <Complementary inCart={[product]} />
+
       {viewerIndex !== null && (
         <ProductImageViewer
           images={productImages}
@@ -264,12 +267,12 @@ export function ProductDetailsPage() {
       )}
       <div className="h-40 md:hidden" />
       {/* Sticky mobile buy bar */}
-      <div className="fixed inset-x-0 z-40 flex items-center gap-2 px-3 py-2.5 md:hidden" style={{ bottom: "calc(3.5rem + env(safe-area-inset-bottom))", background: "rgba(15,15,15,0.96)", borderTop: "1px solid rgba(212,175,55,0.2)", backdropFilter: "blur(8px)" }}>
+      <div className="fixed inset-x-0 z-40 flex items-center gap-2 px-3 py-2.5 md:hidden" style={{ bottom: "calc(3.5rem + env(safe-area-inset-bottom))", background: "rgba(21,18,16,0.96)", borderTop: "1px solid rgba(201,162,74,0.2)", backdropFilter: "blur(8px)" }}>
         <div className="flex flex-col leading-tight">
           <span className="text-lg font-black" style={{ color: "#fff" }}>{product.price} ج.م</span>
           {product.originalPrice > product.price && <span className="text-xs text-gray-500 line-through">{product.originalPrice} ج.م</span>}
         </div>
-        <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" className="flex-1 !py-3">
+        <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" variant="cta" className="flex-1 !py-3">
           {product.stock > 0 ? "أضف إلى السلة" : "نفذت الكمية"}
         </GoldBtn>
         <a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="اطلب عن طريق واتساب" className="flex h-12 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 text-sm font-bold text-white" style={{ background: "#25D366" }}>

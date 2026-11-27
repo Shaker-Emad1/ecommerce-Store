@@ -21,6 +21,7 @@ interface HomeContext {
   categories: CategoryDto[];
   banners: BannerDto[];
   featuredProducts: ProductDto[];
+  newArrivals?: any[];
   bestSellers: ProductDto[];
   storeSettings: SettingDto | null;
   loading: boolean;
@@ -31,7 +32,7 @@ export function HomePage() {
   usePageTitle();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { categories, banners, featuredProducts, bestSellers, loading, error } = useOutletContext<HomeContext>();
+  const { categories, banners, featuredProducts, bestSellers, newArrivals, loading, error } = useOutletContext<HomeContext>();
 
   const deal = [...bestSellers, ...featuredProducts].map(mapDtoToProduct).filter((p) => p.originalPrice > p.price && p.stock > 0).sort((a, b) => (1 - b.price / b.originalPrice) - (1 - a.price / a.originalPrice))[0];
 
@@ -45,7 +46,7 @@ export function HomePage() {
 
       {deal && (
         <div className="max-w-7xl mx-auto px-4 pt-2 pb-4">
-          <button onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0, 0); }} className="flex w-full items-center gap-4 rounded-2xl p-3 text-right" style={{ background: "#1A1A1A", border: "1px solid rgba(212,175,55,0.3)" }}>
+          <button onClick={() => { navigate(`/product/${deal.id}`); window.scrollTo(0, 0); }} className="flex w-full items-center gap-4 rounded-2xl p-3 text-right" style={{ background: "#1F1B18", border: "1px solid rgba(201,162,74,0.3)" }}>
             <span className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-white sm:h-28 sm:w-28">
               <img src={optimizeImg(deal.image, 240)} alt={deal.name} width={112} height={112} className="h-full w-full object-contain p-1" decoding="async" />
             </span>
@@ -91,7 +92,7 @@ export function HomePage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.filter((c) => c.productsCount > 0).map((c) => (
-              <button key={c.id} onClick={() => { navigate(categoryPath(c)); window.scrollTo(0, 0); }} className="flex flex-col items-center justify-center gap-2 rounded-2xl py-5 transition-colors hover:bg-white/10" style={{ minHeight: 112, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(212,175,55,0.2)" }}>
+              <button key={c.id} onClick={() => { navigate(categoryPath(c)); window.scrollTo(0, 0); }} className="flex flex-col items-center justify-center gap-2 rounded-2xl py-5 transition-colors hover:bg-white/10" style={{ minHeight: 112, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(201,162,74,0.2)" }}>
                 <span style={{ color: GOLD }}>{getIconComponent(c.icon)}</span>
                 <span className="text-sm font-bold text-white">{c.name}</span>
                 <span className="text-xs text-gray-400">{c.productsCount} منتج</span>
@@ -110,24 +111,24 @@ export function HomePage() {
         ) : bestSellers.length === 0 ? (
           <div className="text-center py-10 text-gray-500 text-sm">لا توجد منتجات متاحة</div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
-            {bestSellers.slice(0, 4).map((p) => <ProductCard key={p.id} p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} />)}
+          <div className="rail flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible items-start">
+            {bestSellers.slice(0, 6).map((p) => <div key={p.id} className="rail-item shrink-0 snap-start w-[72%] sm:w-[46%] md:w-auto"><ProductCard p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} /></div>)}
           </div>
         )}
       </div>
 
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <SectionTitle title="أحدث المنتجات" sub="وصل حديثاً إلى متجرنا" action="عرض الكل" onAction={() => { navigate("/products"); window.scrollTo(0, 0); }} />
+        <SectionTitle title="وصل حديثاً" sub="أحدث المنتجات في المتجر" action="عرض الكل" onAction={() => { navigate("/products"); window.scrollTo(0, 0); }} />
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
             {[1, 2, 3, 4].map((i) => <ProductSkeleton key={i} />)}
           </div>
-        ) : featuredProducts.length === 0 ? (
+        ) : (newArrivals?.length || featuredProducts.length) === 0 ? (
           <div className="text-center py-10 text-gray-500 text-sm">لا توجد منتجات متاحة</div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 items-start">
-            {featuredProducts.slice(0, 4).map((p) => <ProductCard key={p.id} p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} />)}
+          <div className="rail flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible items-start">
+            {(newArrivals && newArrivals.length ? newArrivals : featuredProducts).slice(0, 6).map((p) => <div key={p.id} className="rail-item shrink-0 snap-start w-[72%] sm:w-[46%] md:w-auto"><ProductCard p={mapDtoToProduct(p)} onAdd={addToCart} onView={onView} /></div>)}
           </div>
         )}
       </div>
@@ -141,8 +142,8 @@ export function HomePage() {
             { Icon: RefreshCw, t: "إرجاع مجاني", d: "سياسة إرجاع مريحة خلال 14 يوم" },
             { Icon: Award, t: "أسعار تنافسية", d: "أفضل الأسعار مقارنة بجميع المتاجر" },
           ].map(({ Icon, t, d }) => (
-            <div key={t} className="rounded-2xl p-6 text-center" style={{ background: "rgba(26,26,26,0.6)", border: `1px solid rgba(212,175,55,0.08)`, backdropFilter: "blur(12px)" }}>
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(212,175,55,0.1)" }}>
+            <div key={t} className="rounded-2xl p-6 text-center" style={{ background: "rgba(26,26,26,0.6)", border: `1px solid rgba(201,162,74,0.08)`, backdropFilter: "blur(12px)" }}>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(201,162,74,0.1)" }}>
                 <Icon size={24} style={{ color: GOLD }} />
               </div>
               <h3 className="font-bold text-white mb-2 text-sm">{t}</h3>

@@ -31,7 +31,7 @@ export function WishlistPage() {
           <GoldBtn onClick={() => navigate("/products")} size="lg">تصفح المنتجات</GoldBtn>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">
+        <div className="stagger grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">
           {list.map((p) => <ProductCard key={p.id} p={p} onAdd={addToCart} onView={(x) => navigate(`/product/${x.id}`)} />)}
         </div>
       )}

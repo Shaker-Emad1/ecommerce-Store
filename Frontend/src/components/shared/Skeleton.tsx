@@ -1,7 +1,7 @@
 export function ProductSkeleton() {
   return (
-    <div className="rounded-2xl overflow-hidden animate-pulse" style={{ background: "#1A1A1A" }}>
-      <div style={{ height: 220, background: "#111" }} />
+    <div className="rounded-2xl overflow-hidden animate-pulse" style={{ background: "#1F1B18" }}>
+      <div style={{ height: 220, background: "#191614" }} />
       <div className="p-4 space-y-3">
         <div className="h-3 w-16 rounded" style={{ background: "#222" }} />
         <div className="h-4 w-3/4 rounded" style={{ background: "#222" }} />
@@ -18,7 +18,7 @@ export function ProductSkeleton() {
 
 export function CategorySkeleton() {
   return (
-    <div className="rounded-2xl overflow-hidden animate-pulse" style={{ height: 148, background: "#1A1A1A" }}>
+    <div className="rounded-2xl overflow-hidden animate-pulse" style={{ height: 148, background: "#1F1B18" }}>
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
         <div className="w-10 h-10 rounded-xl" style={{ background: "#222" }} />
         <div className="h-4 w-20 rounded" style={{ background: "#222" }} />
@@ -77,8 +77,8 @@ export function ProductDetailSkeleton() {
     <div className="max-w-7xl mx-auto px-4 py-10 animate-pulse" aria-busy="true" aria-label="جاري التحميل">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="space-y-3">
-          <div className="rounded-2xl" style={{ height: 360, background: "#1A1A1A" }} />
-          <div className="grid grid-cols-4 gap-3">{[1, 2, 3, 4].map((i) => <div key={i} className="rounded-xl" style={{ height: 64, background: "#1A1A1A" }} />)}</div>
+          <div className="rounded-2xl" style={{ height: 360, background: "#1F1B18" }} />
+          <div className="grid grid-cols-4 gap-3">{[1, 2, 3, 4].map((i) => <div key={i} className="rounded-xl" style={{ height: 64, background: "#1F1B18" }} />)}</div>
         </div>
         <div className="space-y-4">
           <div className="h-6 w-20 rounded-lg" style={{ background: "#222" }} />
@@ -86,7 +86,7 @@ export function ProductDetailSkeleton() {
           <div className="h-4 w-40 rounded" style={{ background: "#222" }} />
           <div className="h-10 w-32 rounded" style={{ background: "#222" }} />
           <div className="h-12 w-full rounded-xl" style={{ background: "#222" }} />
-          <div className="h-28 w-full rounded-2xl" style={{ background: "#1A1A1A" }} />
+          <div className="h-28 w-full rounded-2xl" style={{ background: "#1F1B18" }} />
         </div>
       </div>
     </div>

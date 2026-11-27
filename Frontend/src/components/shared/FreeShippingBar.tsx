@@ -5,7 +5,7 @@ export function FreeShippingBar({ total, threshold }: { total: number; threshold
   const free = total > threshold;
   const pct = Math.min(100, Math.round((total / threshold) * 100));
   return (
-    <div className="rounded-xl p-3" style={{ background: "rgba(212,175,55,0.06)", border: "1px solid rgba(212,175,55,0.15)" }}>
+    <div className="rounded-xl p-3" style={{ background: "rgba(201,162,74,0.06)", border: "1px solid rgba(201,162,74,0.15)" }}>
       <div className="flex items-center gap-2 text-xs mb-2" style={{ color: free ? "#22c55e" : GOLD }}>
         <Truck size={14} aria-hidden="true" />
         <span className="font-bold">{free ? "مبروك! شحن طلبك مجاني" : `باقي ${threshold - total + 1} ج.م ويبقى الشحن مجاني`}</span>

@@ -355,7 +355,7 @@ export function ProductImageViewer({ images, index, name, onClose, onIndexChange
 
   const arrowButtonStyle = {
     background: "rgba(26,26,26,0.82)",
-    border: "1px solid rgba(212,175,55,0.18)",
+    border: "1px solid rgba(201,162,74,0.18)",
     color: "#F8F8F8",
     boxShadow: "0 12px 36px rgba(0,0,0,0.24)",
     backdropFilter: "blur(16px)",
@@ -415,7 +415,7 @@ export function ProductImageViewer({ images, index, name, onClose, onIndexChange
             onTouchEnd={handleTouchEnd}
             style={{
               maxHeight: "84vh",
-              border: "1px solid rgba(212,175,55,0.14)",
+              border: "1px solid rgba(201,162,74,0.14)",
               boxShadow: "0 30px 80px rgba(0,0,0,0.28)",
               touchAction: "none",
             }}

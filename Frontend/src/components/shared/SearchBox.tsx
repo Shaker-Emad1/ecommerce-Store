@@ -55,7 +55,7 @@ export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...
         placeholder={placeholder}
         aria-label="بحث في المتجر"
         className="w-full rounded-xl py-2.5 pl-10 pr-10 text-white text-sm outline-none placeholder-gray-500"
-        style={{ background: "#111", border: "1px solid rgba(212,175,55,0.25)", minHeight: "2.75rem" }}
+        style={{ background: "#191614", border: "1px solid rgba(201,162,74,0.25)", minHeight: "2.75rem" }}
       />
       <button type="button" aria-label="بحث" onClick={submit} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: GOLD }}>
         <Search size={17} />
@@ -66,7 +66,7 @@ export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...
         </button>
       )}
       {open && q.trim().length >= 2 && (
-        <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl shadow-2xl" style={{ background: "#1a1a1a", border: "1px solid rgba(212,175,55,0.25)" }}>
+        <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl shadow-2xl" style={{ background: "#1a1a1a", border: "1px solid rgba(201,162,74,0.25)" }}>
           {results.length === 0 ? (
             <div className="p-4 text-sm text-gray-400">مفيش نتائج لـ "{q}". جرّب كلمة تانية.</div>
           ) : (
@@ -75,7 +75,7 @@ export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...
                 <button key={p.id} type="button" onMouseEnter={() => setHi(i)}
                   onClick={() => { navigate(`/product/${p.id}`); setQ(""); finish(); }}
                   className="flex w-full items-center gap-3 px-3 py-2 text-right"
-                  style={{ background: hi === i ? "rgba(212,175,55,0.1)" : "transparent", minHeight: "3.25rem" }}>
+                  style={{ background: hi === i ? "rgba(201,162,74,0.1)" : "transparent", minHeight: "3.25rem" }}>
                   <span className="h-11 w-11 shrink-0 overflow-hidden rounded-lg bg-white">
                     <img src={optimizeImg(p.image, 96)} alt="" width={44} height={44} className="h-full w-full object-contain" loading="lazy" />
                   </span>
@@ -86,7 +86,7 @@ export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...
                   <span className="shrink-0 text-sm font-black text-white">{p.price} ج.م</span>
                 </button>
               ))}
-              <button type="button" onClick={submit} className="w-full px-3 py-2.5 text-sm font-bold" style={{ color: GOLD, borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+              <button type="button" onClick={submit} className="w-full px-3 py-2.5 text-sm font-bold" style={{ color: GOLD, borderTop: "1px solid rgba(201,162,74,0.15)" }}>
                 عرض كل النتائج
               </button>
             </>

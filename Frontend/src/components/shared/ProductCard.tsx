@@ -2,7 +2,7 @@ import { ProductImage } from "./ProductImage";
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { StarRating } from "./StarRating";
-import { GOLD, LIGHT_GOLD, CARD, BG } from "../../store/constants";
+import { GOLD, CARD, CTA_GOLD, BG } from "../../store/constants";
 import { Product } from "../../store/types";
 
 export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Product) => void; onView: (p: Product) => void }) {
@@ -26,7 +26,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
   return (
     <div
       className="product-card-mobile rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col self-start w-full"
-      style={{ background: CARD, border: `1px solid rgba(212,175,55,0.1)`, boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
+      style={{ background: CARD, border: `1px solid rgba(201,162,74,0.1)`, boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
     >
       <div className="product-card-mobile__image relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
         <ProductImage src={p.image} alt={p.name} width={480} widths={[240, 480, 720]} sizes="(max-width:640px) 50vw, 25vw" />
@@ -72,7 +72,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
           onClick={() => onAdd(p)}
           disabled={p.stock <= 0}
           className="product-card-mobile__cta w-full rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-50"
-          style={{ background: `linear-gradient(135deg, ${GOLD}, ${LIGHT_GOLD})`, color: BG }}
+          style={{ background: CTA_GOLD, color: "#1a1306" }}
         >
           {p.stock > 0 ? "أضف إلى السلة" : "نفذت الكمية"}
         </button>

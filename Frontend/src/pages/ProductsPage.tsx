@@ -14,8 +14,8 @@ import { categoryPath } from "../shared/slug";
 const PAGE_SIZE = 12;
 const chip = (on: boolean): React.CSSProperties => ({
   background: on ? GOLD : "rgba(255,255,255,0.05)",
-  color: on ? "#0F0F0F" : "#d4d4d4",
-  border: `1px solid ${on ? "transparent" : "rgba(212,175,55,0.2)"}`,
+  color: on ? "#151210" : "#d4d4d4",
+  border: `1px solid ${on ? "transparent" : "rgba(201,162,74,0.2)"}`,
   minHeight: "2.5rem",
 });
 
@@ -119,15 +119,15 @@ export function ProductsPage() {
       </div>
 
       {panel && (
-        <div className="mt-3 grid gap-4 rounded-2xl p-4 sm:grid-cols-2" style={{ background: CARD, border: "1px solid rgba(212,175,55,0.2)" }}>
+        <div className="mt-3 grid gap-4 rounded-2xl p-4 sm:grid-cols-2" style={{ background: CARD, border: "1px solid rgba(201,162,74,0.2)" }}>
           <div>
             <p className="mb-2 text-sm font-bold text-white">السعر (ج.م)</p>
             <div className="flex items-center gap-2">
               <input inputMode="numeric" placeholder={`من ${priceBounds[0]}`} value={minP} onChange={(e) => setParam("min", e.target.value.replace(/\D/g, ""))}
-                className="w-full rounded-xl bg-black px-3 text-sm text-white outline-none" style={{ border: "1px solid rgba(212,175,55,0.25)", minHeight: "2.75rem" }} aria-label="أقل سعر" />
+                className="w-full rounded-xl bg-black px-3 text-sm text-white outline-none" style={{ border: "1px solid rgba(201,162,74,0.25)", minHeight: "2.75rem" }} aria-label="أقل سعر" />
               <span className="text-gray-500">-</span>
               <input inputMode="numeric" placeholder={`إلى ${priceBounds[1]}`} value={maxP} onChange={(e) => setParam("max", e.target.value.replace(/\D/g, ""))}
-                className="w-full rounded-xl bg-black px-3 text-sm text-white outline-none" style={{ border: "1px solid rgba(212,175,55,0.25)", minHeight: "2.75rem" }} aria-label="أعلى سعر" />
+                className="w-full rounded-xl bg-black px-3 text-sm text-white outline-none" style={{ border: "1px solid rgba(201,162,74,0.25)", minHeight: "2.75rem" }} aria-label="أعلى سعر" />
             </div>
           </div>
           <div className="flex flex-wrap items-end gap-2">
@@ -149,7 +149,7 @@ export function ProductsPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">
+            <div className="stagger grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 items-start">
               {shown.map((p) => <ProductCard key={p.id} p={p} onAdd={addToCart} onView={(x) => navigate(`/product/${x.id}`)} />)}
             </div>
             {pages > 1 && (
@@ -186,15 +186,15 @@ function SortMenu({ value, onChange }: { value: string; onChange: (v: string) =>
   return (
     <div ref={ref} className="relative">
       <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="listbox" aria-expanded={open}
-        className="flex items-center gap-2 rounded-xl px-4 text-sm font-bold text-white" style={{ background: CARD, border: "1px solid rgba(212,175,55,0.3)", minHeight: "2.75rem" }}>
+        className="flex items-center gap-2 rounded-xl px-4 text-sm font-bold text-white" style={{ background: CARD, border: "1px solid rgba(201,162,74,0.3)", minHeight: "2.75rem" }}>
         {label} <ChevronDown size={16} style={{ color: GOLD }} />
       </button>
       {open && (
-        <ul role="listbox" className="absolute z-30 mt-2 w-60 overflow-hidden rounded-xl py-1 shadow-2xl" style={{ background: "#1a1a1a", border: "1px solid rgba(212,175,55,0.3)", insetInlineStart: 0 }}>
+        <ul role="listbox" className="absolute z-30 mt-2 w-60 overflow-hidden rounded-xl py-1 shadow-2xl" style={{ background: "#1a1a1a", border: "1px solid rgba(201,162,74,0.3)", insetInlineStart: 0 }}>
           {SORTS.map(([v, l]) => (
             <li key={v} role="option" aria-selected={value === v}>
               <button type="button" onClick={() => { onChange(v); setOpen(false); }}
-                className="flex w-full items-center justify-between px-4 text-sm" style={{ minHeight: "2.75rem", color: value === v ? GOLD : "#e5e5e5", background: value === v ? "rgba(212,175,55,0.1)" : "transparent", fontWeight: value === v ? 800 : 500 }}>
+                className="flex w-full items-center justify-between px-4 text-sm" style={{ minHeight: "2.75rem", color: value === v ? GOLD : "#e5e5e5", background: value === v ? "rgba(201,162,74,0.1)" : "transparent", fontWeight: value === v ? 800 : 500 }}>
                 {l} {value === v && <Check size={16} />}
               </button>
             </li>

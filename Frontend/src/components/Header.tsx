@@ -25,11 +25,11 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
 
 
   return (
-    <header className="sticky top-0 z-50" style={{ background: "rgba(15,15,15,0.97)", backdropFilter: "blur(24px)", borderBottom: `1px solid rgba(212,175,55,0.12)` }}>
+    <header className="sticky top-0 z-50" style={{ background: "rgba(21,18,16,0.97)", backdropFilter: "blur(24px)", borderBottom: `1px solid rgba(201,162,74,0.12)` }}>
       {/* Announcement bar */}
       <div
         className="text-center py-1.5 text-xs text-gray-300 border-b px-3 leading-snug"
-        style={{ borderColor: "rgba(212,175,55,0.08)", background: "rgba(212,175,55,0.03)" }}
+        style={{ borderColor: "rgba(201,162,74,0.08)", background: "rgba(201,162,74,0.03)" }}
       >
         <Truck size={13} className="inline -mt-0.5 ml-1" aria-hidden="true" /> شحن مجاني للطلبات فوق {threshold} ج.م &nbsp;|&nbsp; <span style={{ color: GOLD }}>تواصل: {phone}</span>
       </div>
@@ -56,7 +56,7 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
         </nav>
 
         <div className="flex items-center gap-2 mr-auto">
-          <button onClick={() => go("/cart")} aria-label="السلة" className="relative p-2 rounded-xl" style={{ background: "rgba(212,175,55,0.08)" }}>
+          <button onClick={() => go("/cart")} aria-label="السلة" className="relative p-2 rounded-xl" style={{ background: "rgba(201,162,74,0.08)" }}>
             <ShoppingCart size={20} style={{ color: GOLD }} />
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs flex items-center justify-center font-black" style={{ background: GOLD, color: BG }}>{cartCount}</span>
@@ -70,11 +70,11 @@ export function Header({ searchQuery, setSearchQuery, storeSettings }: { searchQ
       </div>
 
       {open && (
-        <div className="lg:hidden px-4 pb-4 border-t" style={{ borderColor: "rgba(212,175,55,0.08)" }}>
+        <div className="lg:hidden px-4 pb-4 border-t" style={{ borderColor: "rgba(201,162,74,0.08)" }}>
           <div className="my-3"><SearchBox placeholder="ابحث..." onDone={() => setOpen(false)} /></div>
           <div className="flex flex-col gap-1">
             {nav.map((n) => (
-              <button key={n.p} onClick={() => go(n.p)} className="py-3 px-4 rounded-xl text-sm font-semibold text-right transition-all" style={{ color: location.pathname === n.p ? GOLD : "#aaa", background: location.pathname === n.p ? "rgba(212,175,55,0.08)" : "transparent" }}>{n.label}</button>
+              <button key={n.p} onClick={() => go(n.p)} className="py-3 px-4 rounded-xl text-sm font-semibold text-right transition-all" style={{ color: location.pathname === n.p ? GOLD : "#aaa", background: location.pathname === n.p ? "rgba(201,162,74,0.08)" : "transparent" }}>{n.label}</button>
             ))}
             
           </div>
