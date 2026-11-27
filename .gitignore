@@ -40,3 +40,10 @@ temp/
 # Local data / uploads / backups
 backup/
 **/wwwroot/uploads/
+
+# Local PostgreSQL server/data directory (never commit database files)
+pgsql/
+**/pgsql/data/
+
+# Repo backup bundles
+*.bundle
