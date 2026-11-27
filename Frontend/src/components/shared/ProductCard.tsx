@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { optimizeImg, optimizeSrcSet } from "../../shared/img";
+import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { StarRating } from "./StarRating";
 import { GOLD, LIGHT_GOLD, CARD, BG } from "../../store/constants";
 import { Product } from "../../store/types";
 
 export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Product) => void; onView: (p: Product) => void }) {
-  const [wished, setWished] = useState(false);
+  const WK = "asb_wishlist";
+  const readWish = () => { try { return (JSON.parse(localStorage.getItem(WK) || "[]") as number[]).includes(Number(p.id)); } catch { return false; } };
+  const [wished, setWished] = useState(readWish);
+  useEffect(() => { setWished(readWish()); }, [p.id]);
+  const toggleWish = () => {
+    try {
+      const list = JSON.parse(localStorage.getItem(WK) || "[]") as number[];
+      const id = Number(p.id);
+      const next = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+      localStorage.setItem(WK, JSON.stringify(next));
+    } catch { /* ignore storage errors */ }
+    setWished(!wished);
+  };
+  const lowStock = p.stock > 0 && p.stock <= 5;
   const discount = p.originalPrice > 0 ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
 
   return (
@@ -14,9 +28,8 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
       style={{ background: CARD, border: `1px solid rgba(212,175,55,0.1)`, boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
     >
       <div className="product-card-mobile__image product-image-stage relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
-        <img loading="lazy" src={p.image} alt={p.name} className="product-image-stage__img transition-transform duration-500" />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.28) 0%, transparent 60%)" }} />
-        <div className="absolute top-3 right-3 flex flex-col gap-1.5">
+        <img loading="lazy" decoding="async" width={400} height={400} sizes="(max-width:640px) 50vw, 25vw" src={optimizeImg(p.image,480)} srcSet={optimizeSrcSet(p.image,[240,480,720])} alt={p.name} className="product-image-stage__img transition-transform duration-500" />
+                <div className="absolute top-3 right-3 flex flex-col gap-1.5">
           {p.badge && (
             <span className="text-xs font-bold px-2 py-0.5 rounded-lg" style={{ background: GOLD, color: BG }}>{p.badge}</span>
           )}
@@ -27,7 +40,8 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
         <button
           className="product-card-mobile__wishlist absolute top-3 left-3 rounded-xl flex items-center justify-center transition-all"
           style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}
-          onClick={(e) => { e.stopPropagation(); setWished(!wished); }}
+          aria-label={wished ? "إزالة من المفضلة" : "إضافة للمفضلة"} aria-pressed={wished}
+          onClick={(e) => { e.stopPropagation(); toggleWish(); }}
         >
           <Heart size={15} fill={wished ? "#ef4444" : "transparent"} stroke={wished ? "#ef4444" : "#fff"} />
         </button>
@@ -35,9 +49,17 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
       <div className="product-card-mobile__body flex flex-col flex-1">
         <p className="text-xs text-gray-500 mb-1">{p.category}</p>
         <h3 className="product-card-mobile__title font-bold text-white leading-snug mb-2 cursor-pointer hover:text-yellow-400 transition-colors line-clamp-2" onClick={() => onView(p)}>{p.name}</h3>
-        <div className="product-card-mobile__rating flex items-center gap-2 mb-3">
-          <StarRating rating={p.rating} />
-          <span className="text-xs text-gray-500">({p.reviews})</span>
+        <div className="product-card-mobile__rating flex items-center gap-2 mb-3" style={{ minHeight: "1.25rem" }}>
+          {p.reviews > 0 ? (
+            <>
+              <StarRating rating={p.rating} />
+              <span className="text-xs text-gray-500">({p.reviews})</span>
+            </>
+          ) : lowStock ? (
+            <span className="text-xs font-bold" style={{ color: "#f87171" }}>باقي {p.stock} قطع فقط</span>
+          ) : (
+            <span className="text-xs text-gray-500">متوفر للتوصيل</span>
+          )}
         </div>
         <div className="product-card-mobile__price flex items-center gap-2 mb-4 mt-auto">
           <span className="font-black text-lg" style={{ color: GOLD }}>{p.price} ج.م</span>

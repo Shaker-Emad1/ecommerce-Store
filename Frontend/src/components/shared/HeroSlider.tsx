@@ -1,3 +1,4 @@
+import { optimizeImg, optimizeSrcSet } from "../../shared/img";
 import { useState, useEffect, useRef } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { GOLD } from "../../store/constants";
@@ -63,7 +64,7 @@ export function HeroSlider({ banners, setPage }: { banners: BannerDto[]; setPage
     >
       {banners.map((sl, i) => (
         <div key={sl.id} className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: i === cur ? 1 : 0 }}>
-          <img src={sl.imageUrl} alt={sl.title} className="w-full h-full object-cover" />
+          <img src={optimizeImg(sl.imageUrl,1400)} srcSet={optimizeSrcSet(sl.imageUrl,[640,1000,1400])} sizes="100vw" fetchPriority="high" decoding="async" alt={sl.title} className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(15,15,15,0.96) 35%, rgba(15,15,15,0.2) 100%)" }} />
         </div>
       ))}

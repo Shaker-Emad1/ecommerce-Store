@@ -1,3 +1,4 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { Box, Users, LayoutGrid, Star, Truck, Shield, RefreshCw, Award } from "lucide-react";
 import { GOLD } from "../store/constants";
 import { usePageTitle } from "../shared/usePageTitle";
@@ -70,7 +71,7 @@ export function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((c) => (
               <button key={c.id} onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="rounded-2xl overflow-hidden group relative" style={{ height: 148, background: "#111", border: `1px solid rgba(212,175,55,0.08)` }}>
-                <img loading="lazy" src={c.imageUrl} alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-65 group-hover:scale-105 transition-all duration-500" />
+                <img loading="lazy" src={optimizeImg(c.imageUrl,640)} decoding="async" alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-65 group-hover:scale-105 transition-all duration-500" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
                   <div style={{ color: GOLD }}>{getIconComponent(c.icon)}</div>
                   <span className="text-white font-bold text-sm">{c.name}</span>

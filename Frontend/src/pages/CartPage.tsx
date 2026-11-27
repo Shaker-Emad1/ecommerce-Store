@@ -1,3 +1,4 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
 import { usePageTitle } from "../shared/usePageTitle";
 
@@ -43,7 +44,7 @@ export function CartPage() {
           {cart.map((item) => (
             <div key={item.product.id} className="rounded-2xl p-4 flex gap-4" style={{ background: CARD, border: `1px solid rgba(212,175,55,0.08)` }}>
               <div className="product-image-stage w-24 h-24 rounded-xl overflow-hidden shrink-0">
-                <img loading="lazy" src={item.product.image} alt={item.product.name} className="product-image-stage__img" />
+                <img loading="lazy" src={optimizeImg(item.product.image,200)} alt={item.product.name} className="product-image-stage__img" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start gap-2">

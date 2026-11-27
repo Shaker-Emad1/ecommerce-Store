@@ -1,9 +1,11 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Minus, Plus, Search } from "lucide-react";
 import { StarRating } from "../components/shared/StarRating";
 import { GoldBtn } from "../components/shared/GoldBtn";
 import { SectionTitle } from "../components/shared/SectionTitle";
+import { ShareButton } from "../components/shared/ShareButton";
 import { ProductCard } from "../components/shared/ProductCard";
 import { ProductImageViewer } from "../components/shared/ProductImageViewer";
 import { useCart } from "../store/cartContext";
@@ -81,7 +83,7 @@ export function ProductDetailsPage() {
             style={{ height: "clamp(260px, 60vw, 420px)", border: "1px solid rgba(212,175,55,0.08)" }}
             aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
           >
-            <img loading="eager" src={productImages[activeImg]} alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
+            <img loading="eager" src={optimizeImg(productImages[activeImg],900)} fetchPriority="high" alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
             <span
               className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold text-white transition-all duration-200 md:hover:scale-[1.03] md:hover:-translate-y-0.5 active:scale-95"
               style={{ background: "rgba(15,15,15,0.76)", border: "1px solid rgba(212,175,55,0.18)", boxShadow: "0 12px 28px rgba(0,0,0,0.24)", backdropFilter: "blur(14px)" }}
@@ -100,7 +102,7 @@ export function ProductDetailsPage() {
                   className="product-image-stage cursor-pointer overflow-hidden rounded-xl transition-all"
                   style={{ height: 80, border: `2px solid ${imageIndex === activeImg ? GOLD : "rgba(212,175,55,0.1)"}` }}
                 >
-                  <img loading="lazy" src={img} alt="" className="product-image-stage__img" />
+                  <img loading="lazy" src={optimizeImg(img,160)} alt="" className="product-image-stage__img" />
                 </div>
               ))}
             </div>
@@ -186,6 +188,8 @@ export function ProductDetailsPage() {
             </div>
           </div>
 
+          <div className="mb-3"><ShareButton id={product.id} name={product.name} price={product.price} /></div>
+
           <div className="mb-8 flex gap-3">
             <GoldBtn disabled={product.stock <= 0} onClick={() => { for (let i = 0; i < qty; i += 1) addToCart(product); }} size="lg" className="flex-1">
               أضف إلى السلة
@@ -267,6 +271,17 @@ export function ProductDetailsPage() {
           }}
         />
       )}
+      <div className="h-20 md:hidden" />
+      {/* Sticky mobile buy bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 px-4 py-3 md:hidden" style={{ background: "rgba(15,15,15,0.96)", borderTop: "1px solid rgba(212,175,55,0.2)", backdropFilter: "blur(8px)" }}>
+        <div className="flex flex-col leading-tight">
+          <span className="text-lg font-black" style={{ color: GOLD }}>{product.price} ج.م</span>
+          {product.originalPrice > product.price && <span className="text-xs text-gray-500 line-through">{product.originalPrice} ج.م</span>}
+        </div>
+        <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" className="flex-1">
+          {product.stock > 0 ? "أضف إلى السلة" : "نفذت الكمية"}
+        </GoldBtn>
+      </div>
     </div>
   );
 }

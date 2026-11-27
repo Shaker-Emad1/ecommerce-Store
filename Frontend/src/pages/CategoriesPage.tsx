@@ -1,3 +1,4 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { useState } from "react";
 import { usePageTitle } from "../shared/usePageTitle";
 
@@ -57,7 +58,7 @@ export function CategoriesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filtered.map((c) => (
                 <button key={c.id} onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="rounded-2xl overflow-hidden group relative text-right w-full" style={{ height: 220, background: "#111", border: `1px solid rgba(212,175,55,0.1)` }}>
-                  <img loading="lazy" src={c.imageUrl} alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500" />
+                  <img loading="lazy" src={optimizeImg(c.imageUrl,640)} decoding="async" alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500" />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,15,15,0.95) 30%, transparent)" }} />
                   <div className="absolute bottom-0 right-0 left-0 p-5">
                     <div className="flex items-center gap-3">

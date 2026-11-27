@@ -1,3 +1,4 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { GOLD, CARD, LIGHT_GOLD, BG } from "../store/constants";
@@ -102,7 +103,7 @@ export function CheckoutPage() {
               {cart.map((item) => (
                 <div key={item.product.id} className="flex gap-3">
                   <div className="product-image-stage w-11 h-11 rounded-xl overflow-hidden shrink-0">
-                    <img loading="lazy" src={item.product.image} alt={item.product.name} className="product-image-stage__img" />
+                    <img loading="lazy" src={optimizeImg(item.product.image,200)} alt={item.product.name} className="product-image-stage__img" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-white font-semibold truncate">{item.product.name}</p>
