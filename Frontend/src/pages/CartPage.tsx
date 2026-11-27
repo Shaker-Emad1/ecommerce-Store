@@ -1,9 +1,12 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
 import { usePageTitle } from "../shared/usePageTitle";
 
 import { useNavigate } from "react-router";
 import { GOLD, CARD } from "../store/constants";
 import { useCart } from "../store/cartContext";
+import { FreeShippingBar } from "../components/shared/FreeShippingBar";
+import { Complementary } from "../components/shared/Complementary";
 import { GoldBtn } from "../components/shared/GoldBtn";
 
 import { useOutletContext } from "react-router";
@@ -14,7 +17,7 @@ export function CartPage() {
   const navigate = useNavigate();
   const { cart, setCart } = useCart();
   const { storeSettings } = useOutletContext<{ storeSettings: SettingDto | null }>();
-  const threshold = storeSettings?.shippingThreshold ?? 900;
+  const threshold = storeSettings?.shippingThreshold ?? 3000;
   const total = cart.reduce((s, i) => s + i.product.price * i.quantity, 0);
   const shipping = total > threshold ? 0 : 50;
 
@@ -41,9 +44,9 @@ export function CartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
-            <div key={item.product.id} className="rounded-2xl p-4 flex gap-4" style={{ background: CARD, border: `1px solid rgba(212,175,55,0.08)` }}>
+            <div key={item.product.id} className="rounded-2xl p-4 flex gap-4" style={{ background: CARD, border: `1px solid rgba(201,162,74,0.08)` }}>
               <div className="product-image-stage w-24 h-24 rounded-xl overflow-hidden shrink-0">
-                <img loading="lazy" src={item.product.image} alt={item.product.name} className="product-image-stage__img" />
+                <img loading="lazy" src={optimizeImg(item.product.image,200)} alt={item.product.name} className="product-image-stage__img" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start gap-2">
@@ -52,7 +55,7 @@ export function CartPage() {
                 </div>
                 <p className="text-xs text-gray-500 mb-3">{item.product.category}</p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center rounded-xl overflow-hidden" style={{ border: `1px solid rgba(212,175,55,0.2)`, background: "#111" }}>
+                  <div className="flex items-center rounded-xl overflow-hidden" style={{ border: `1px solid rgba(201,162,74,0.2)`, background: "#191614" }}>
                     <button onClick={() => updateQty(item.product.id, -1)} className="w-10 h-10 flex items-center justify-center text-white hover:opacity-60"><Minus size={14} /></button>
                     <span className="w-8 text-center text-white text-sm font-bold">{item.quantity}</span>
                     <button onClick={() => updateQty(item.product.id, 1)} className="w-10 h-10 flex items-center justify-center text-white hover:opacity-60"><Plus size={14} /></button>
@@ -63,7 +66,7 @@ export function CartPage() {
             </div>
           ))}
         </div>
-        <div className="rounded-2xl p-6 h-fit" style={{ background: CARD, border: `1px solid rgba(212,175,55,0.1)` }}>
+        <div className="rounded-2xl p-6 h-fit" style={{ background: CARD, border: `1px solid rgba(201,162,74,0.1)` }}>
           <h2 className="font-bold text-white text-lg mb-5">ملخص الطلب</h2>
           <div className="space-y-3 mb-4">
             <div className="flex justify-between text-sm">
@@ -74,9 +77,9 @@ export function CartPage() {
               <span className="text-gray-500">الشحن</span>
               <span style={{ color: shipping === 0 ? "#22c55e" : "white" }}>{shipping === 0 ? "مجاني" : `${shipping} ج.م`}</span>
             </div>
-            {total < threshold && <p className="text-xs" style={{ color: GOLD }}>أضف {threshold - total} ج.م للحصول على شحن مجاني</p>}
+            <FreeShippingBar total={total} threshold={threshold} />
           </div>
-          <div className="py-4 mb-5" style={{ borderTop: `1px solid rgba(212,175,55,0.08)`, borderBottom: `1px solid rgba(212,175,55,0.08)` }}>
+          <div className="py-4 mb-5" style={{ borderTop: `1px solid rgba(201,162,74,0.08)`, borderBottom: `1px solid rgba(201,162,74,0.08)` }}>
             <div className="flex justify-between font-bold">
               <span className="text-white">الإجمالي</span>
               <span className="text-xl" style={{ color: GOLD }}>{total + shipping} ج.م</span>
@@ -86,6 +89,7 @@ export function CartPage() {
           <button onClick={() => { navigate("/products"); window.scrollTo(0, 0); }} className="w-full mt-3 py-2.5 text-sm font-semibold" style={{ color: GOLD }}>مواصلة التسوق</button>
         </div>
       </div>
+      <Complementary inCart={cart.map((i) => i.product)} title="ناقصك حاجة؟" sub="إكسسوارات مناسبة لمشترياتك" />
     </div>
   );
 }

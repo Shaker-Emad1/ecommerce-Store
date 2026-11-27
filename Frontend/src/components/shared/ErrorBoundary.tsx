@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
       return (
-        <div className="min-h-screen flex items-center justify-center" style={{ background: "#0F0F0F" }}>
+        <div className="min-h-screen flex items-center justify-center" style={{ background: "#151210" }}>
           <div className="text-center p-8 max-w-md">
             <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{ background: "rgba(239,68,68,0.1)" }}>
               <span className="text-4xl">⚠️</span>
@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <button
               onClick={() => window.location.reload()}
               className="px-8 py-3 rounded-xl font-bold text-base"
-              style={{ background: `linear-gradient(135deg, #D4AF37, #E6D3A3)`, color: "#0F0F0F" }}
+              style={{ background: `linear-gradient(135deg, #C9A24A, #E6D3A3)`, color: "#151210" }}
             >
               تحديث الصفحة
             </button>

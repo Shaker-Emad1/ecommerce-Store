@@ -1,21 +1,32 @@
+import { optimizeImg, optimizeSrcSet } from "../shared/img";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Minus, Plus, Search } from "lucide-react";
+import { Minus, Plus, MessageCircle } from "lucide-react";
 import { StarRating } from "../components/shared/StarRating";
 import { GoldBtn } from "../components/shared/GoldBtn";
 import { SectionTitle } from "../components/shared/SectionTitle";
+import { Complementary } from "../components/shared/Complementary";
+import { ProductGallery } from "../components/shared/ProductGallery";
+import { ProductDetailSkeleton } from "../components/shared/Skeleton";
+import { getContact, whatsappLink, WHATSAPP_CONFIRMED } from "../shared/contact";
+import { useOutletContext } from "react-router";
+import { SettingDto } from "../services/settingService";
+import { ShareButton } from "../components/shared/ShareButton";
 import { ProductCard } from "../components/shared/ProductCard";
 import { ProductImageViewer } from "../components/shared/ProductImageViewer";
 import { useCart } from "../store/cartContext";
 import { GOLD } from "../store/constants";
 import { Product, mapDtoToProduct } from "../store/types";
 import { productService } from "../services/productService";
-import { usePageTitle } from "../shared/usePageTitle";
+import { usePageMeta } from "../shared/usePageMeta";
+
+const WaIcon = () => <MessageCircle size={18} aria-hidden="true" />;
 
 export function ProductDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { storeSettings } = useOutletContext<{ storeSettings: SettingDto | null }>();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [qty, setQty] = useState(1);
@@ -28,7 +39,16 @@ export function ProductDetailsPage() {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [productImages, setProductImages] = useState<string[]>([]);
 
-  usePageTitle(product?.name || "تفاصيل المنتج");
+  usePageMeta({
+    title: product ? `${product.name} - ${product.price} ج.م` : "تفاصيل المنتج",
+    description: product ? `اشتري ${product.name} بسعر ${product.price} ج.م من A.S Brand Store. دفع عند الاستلام وشحن لكل محافظات مصر.` : "تفاصيل المنتج",
+    image: product?.image,
+    jsonLd: product ? {
+      "@context": "https://schema.org", "@type": "Product", name: product.name, image: [product.image, ...productImages].filter(Boolean),
+      description: product.description || product.name, category: product.category,
+      offers: { "@type": "Offer", priceCurrency: "EGP", price: product.price, availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", url: window.location.href },
+    } : null,
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -61,59 +81,29 @@ export function ProductDetailsPage() {
   }, [id]);
 
   if (loading) {
-    return <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-500">جاري تحميل تفاصيل المنتج...</div>;
+    return <ProductDetailSkeleton />;
   }
 
   if (error || !product) {
     return <div className="max-w-7xl mx-auto px-4 py-20 text-center text-red-500">{error || "المنتج غير موجود"}</div>;
   }
 
+  const waNumber = getContact(storeSettings).whatsapp;
+  const waUrl = whatsappLink(waNumber, `السلام عليكم، عايز أطلب: ${product.name} (${product.price} ج.م)\n${window.location.href}`);
   const discount = product.originalPrice > 0 ? Math.round((1 - product.price / product.originalPrice) * 100) : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        <div className="space-y-4">
-          <button
-            type="button"
-            onClick={() => setViewerIndex(activeImg)}
-            className="product-image-stage product-image-stage--featured relative block w-full overflow-hidden rounded-2xl text-right transition-transform hover:scale-[1.01]"
-            style={{ height: "clamp(260px, 60vw, 420px)", border: "1px solid rgba(212,175,55,0.08)" }}
-            aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
-          >
-            <img loading="eager" src={productImages[activeImg]} alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
-            <span
-              className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold text-white transition-all duration-200 md:hover:scale-[1.03] md:hover:-translate-y-0.5 active:scale-95"
-              style={{ background: "rgba(15,15,15,0.76)", border: "1px solid rgba(212,175,55,0.18)", boxShadow: "0 12px 28px rgba(0,0,0,0.24)", backdropFilter: "blur(14px)" }}
-            >
-              <Search size={13} style={{ color: GOLD }} />
-              تكبير الصورة
-            </span>
-          </button>
-
-          {productImages.length > 1 && (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {productImages.map((img, imageIndex) => (
-                <div
-                  key={imageIndex}
-                  onClick={() => setActiveImg(imageIndex)}
-                  className="product-image-stage cursor-pointer overflow-hidden rounded-xl transition-all"
-                  style={{ height: 80, border: `2px solid ${imageIndex === activeImg ? GOLD : "rgba(212,175,55,0.1)"}` }}
-                >
-                  <img loading="lazy" src={img} alt="" className="product-image-stage__img" />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductGallery images={productImages} name={product.name} active={activeImg} onActive={setActiveImg} onOpen={setViewerIndex} />
 
         <div>
           <div className="mb-3 flex items-start justify-between">
-            <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: "rgba(212,175,55,0.12)", color: GOLD }}>
+            <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: "rgba(201,162,74,0.12)", color: GOLD }}>
               {product.category}
             </span>
             {product.badge && (
-              <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: GOLD, color: "#0F0F0F" }}>
+              <span className="rounded-lg px-2.5 py-1 text-xs font-bold" style={{ background: GOLD, color: "#151210" }}>
                 {product.badge}
               </span>
             )}
@@ -136,7 +126,7 @@ export function ProductDetailsPage() {
           </div>
 
           <div className="mb-6 flex items-end gap-3">
-            <span className="text-4xl font-black" style={{ color: GOLD }}>
+            <span className="text-4xl font-black" style={{ color: "#fff" }}>
               {product.price} ج.م
             </span>
             {product.originalPrice > product.price && (
@@ -161,7 +151,7 @@ export function ProductDetailsPage() {
                     style={{
                       background: swatch,
                       border: `3px solid ${color === swatch ? GOLD : "transparent"}`,
-                      boxShadow: color === swatch ? "0 0 0 2px rgba(212,175,55,0.3)" : "none",
+                      boxShadow: color === swatch ? "0 0 0 2px rgba(201,162,74,0.3)" : "none",
                       outline: "2px solid rgba(255,255,255,0.08)",
                     }}
                   />
@@ -173,7 +163,7 @@ export function ProductDetailsPage() {
           <div className="mb-8">
             <p className="mb-2 text-sm text-gray-500">الكمية</p>
             <div className="flex items-center gap-4">
-              <div className="flex items-center overflow-hidden rounded-xl" style={{ border: "1px solid rgba(212,175,55,0.2)", background: "#111" }}>
+              <div className="flex items-center overflow-hidden rounded-xl" style={{ border: "1px solid rgba(201,162,74,0.2)", background: "#191614" }}>
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-11 w-11 items-center justify-center text-white transition-opacity hover:opacity-60">
                   <Minus size={15} />
                 </button>
@@ -186,14 +176,16 @@ export function ProductDetailsPage() {
             </div>
           </div>
 
+          <div className="mb-3"><ShareButton id={product.id} name={product.name} price={product.price} /></div>
+
           <div className="mb-8 flex gap-3">
-            <GoldBtn disabled={product.stock <= 0} onClick={() => { for (let i = 0; i < qty; i += 1) addToCart(product); }} size="lg" className="flex-1">
+            <GoldBtn disabled={product.stock <= 0} onClick={() => { for (let i = 0; i < qty; i += 1) addToCart(product, { silent: i < qty - 1 }); }} size="lg" variant="cta" className="flex-1">
               أضف إلى السلة
             </GoldBtn>
             <GoldBtn
               disabled={product.stock <= 0}
               onClick={() => {
-                addToCart(product);
+                addToCart(product, { silent: true });
                 navigate("/cart");
               }}
               variant="outline"
@@ -204,8 +196,12 @@ export function ProductDetailsPage() {
             </GoldBtn>
           </div>
 
-          <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(212,175,55,0.1)" }}>
-            <div className="flex" style={{ borderBottom: "1px solid rgba(212,175,55,0.1)" }}>
+          {WHATSAPP_CONFIRMED && <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mb-8 hidden md:flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white" style={{ background: "#25D366" }}>
+            <WaIcon /> اطلب عن طريق واتساب
+          </a>}
+
+          <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(201,162,74,0.1)" }}>
+            <div className="flex" style={{ borderBottom: "1px solid rgba(201,162,74,0.1)" }}>
               {[{ key: "desc" as const, label: "الوصف" }, { key: "specs" as const, label: "المواصفات" }].map(({ key, label }) => (
                 <button
                   key={key}
@@ -213,7 +209,7 @@ export function ProductDetailsPage() {
                   className="flex-1 py-3 text-sm font-semibold transition-all"
                   style={{
                     color: tab === key ? GOLD : "#666",
-                    background: tab === key ? "rgba(212,175,55,0.07)" : "transparent",
+                    background: tab === key ? "rgba(201,162,74,0.07)" : "transparent",
                     borderBottom: tab === key ? `2px solid ${GOLD}` : "2px solid transparent",
                   }}
                 >
@@ -255,6 +251,8 @@ export function ProductDetailsPage() {
         <div className="py-10 text-center text-xs text-gray-500">لا توجد منتجات مشابهة متوفرة</div>
       )}
 
+      <Complementary inCart={[product]} />
+
       {viewerIndex !== null && (
         <ProductImageViewer
           images={productImages}
@@ -267,6 +265,20 @@ export function ProductDetailsPage() {
           }}
         />
       )}
+      <div className="h-40 md:hidden" />
+      {/* Sticky mobile buy bar */}
+      <div className="fixed inset-x-0 z-40 flex items-center gap-2 px-3 py-2.5 md:hidden" style={{ bottom: "calc(3.5rem + env(safe-area-inset-bottom))", background: "rgba(21,18,16,0.96)", borderTop: "1px solid rgba(201,162,74,0.2)", backdropFilter: "blur(8px)" }}>
+        <div className="flex flex-col leading-tight">
+          <span className="text-lg font-black" style={{ color: "#fff" }}>{product.price} ج.م</span>
+          {product.originalPrice > product.price && <span className="text-xs text-gray-500 line-through">{product.originalPrice} ج.م</span>}
+        </div>
+        <GoldBtn disabled={product.stock <= 0} onClick={() => addToCart(product)} size="lg" variant="cta" className="flex-1 !py-3">
+          {product.stock > 0 ? "أضف إلى السلة" : "نفذت الكمية"}
+        </GoldBtn>
+        {WHATSAPP_CONFIRMED && <a href={waUrl} target="_blank" rel="noopener noreferrer" aria-label="اطلب عن طريق واتساب" className="flex h-12 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 text-sm font-bold text-white" style={{ background: "#25D366" }}>
+          <WaIcon /> واتساب
+        </a>}
+      </div>
     </div>
   );
 }

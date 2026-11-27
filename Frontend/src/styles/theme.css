@@ -2,20 +2,20 @@
 
 :root {
   --font-size: 16px;
-  --background: #0F0F0F;
+  --background: #151210;
   --foreground: #F8F8F8;
-  --card: #1A1A1A;
+  --card: #1F1B18;
   --card-foreground: #F8F8F8;
-  --popover: #1A1A1A;
+  --popover: #1F1B18;
   --popover-foreground: #F8F8F8;
-  --primary: #D4AF37;
-  --primary-foreground: #0F0F0F;
-  --secondary: #1A1A1A;
+  --primary: #C9A24A;
+  --primary-foreground: #151210;
+  --secondary: #1F1B18;
   --secondary-foreground: #F8F8F8;
   --muted: #2A2A2A;
   --muted-foreground: #888888;
-  --accent: #D4AF37;
-  --accent-foreground: #0F0F0F;
+  --accent: #C9A24A;
+  --accent-foreground: #151210;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: rgba(212, 175, 55, 0.15);
@@ -42,20 +42,20 @@
 }
 
 .dark {
-  --background: #0F0F0F;
+  --background: #151210;
   --foreground: #F8F8F8;
-  --card: #1A1A1A;
+  --card: #1F1B18;
   --card-foreground: #F8F8F8;
-  --popover: #1A1A1A;
+  --popover: #1F1B18;
   --popover-foreground: #F8F8F8;
-  --primary: #D4AF37;
-  --primary-foreground: #0F0F0F;
-  --secondary: #1A1A1A;
+  --primary: #C9A24A;
+  --primary-foreground: #151210;
+  --secondary: #1F1B18;
   --secondary-foreground: #F8F8F8;
   --muted: #2A2A2A;
   --muted-foreground: #888888;
-  --accent: #D4AF37;
-  --accent-foreground: #0F0F0F;
+  --accent: #C9A24A;
+  --accent-foreground: #151210;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: rgba(212, 175, 55, 0.15);
@@ -185,6 +185,8 @@
 }
 
 .product-image-stage {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,17 +200,17 @@
 .product-image-stage__img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  padding: 0.75rem;
+  padding: 0;
 }
 
 .product-image-stage--featured {
-  padding: clamp(0.2rem, 0.7vw, 0.4rem);
+  padding: 0;
 }
 
 .product-image-stage__img--featured {
-  padding: clamp(0.2rem, 0.9vw, 0.45rem);
+  padding: 0;
 }
 
 .fullscreen-viewer-fade {
@@ -255,12 +257,18 @@
 }
 
 .product-card-mobile__image {
-  height: 220px;
+  height: auto;
 }
 
 .product-card-mobile__wishlist {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
+}
+/* keep a 44px touch area without a big visible disc */
+.product-card-mobile__wishlist::after {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
 }
 
 .product-card-mobile__body {
@@ -293,21 +301,21 @@
   }
 
   .product-card-mobile__image {
-    height: 172px;
+    height: auto;
   }
 
   .product-image-stage__img {
-    padding: 0.625rem;
+    padding: 0;
   }
 
   .product-image-stage__img--featured {
-    padding: 0.25rem;
+    padding: 0;
   }
 
   .product-card-mobile__wishlist {
-    width: 2.25rem;
-    height: 2.25rem;
-    top: 0.625rem;
+    width: 1.875rem;
+    height: 1.875rem;
+    top: 0.5rem;
     left: 0.625rem;
   }
 
@@ -349,3 +357,41 @@
 }
 
 
+
+
+/* Whole-photo frame: image is contained, surrounding space uses the photo's edge colours */
+.product-image-frame {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+.product-image-frame__img {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ---- Headings: stronger Arabic display face ---- */
+h1, h2, h3, .font-heading { font-family: 'Changa', 'Cairo', 'Tajawal', sans-serif; letter-spacing: 0; }
+h1 { font-weight: 800; }
+
+/* ---- Light motion (transform/opacity only, no layout shift) ---- */
+@keyframes asb-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes asb-fade { from { opacity: 0; } to { opacity: 1; } }
+.page-enter { animation: asb-fade .28s ease-out both; }
+.stagger > *, .rail > .rail-item { animation: asb-rise .45s cubic-bezier(.2,.7,.2,1) both; }
+.stagger > :nth-child(1), .rail > :nth-child(1) { animation-delay: 0ms; }
+.stagger > :nth-child(2), .rail > :nth-child(2) { animation-delay: 60ms; }
+.stagger > :nth-child(3), .rail > :nth-child(3) { animation-delay: 120ms; }
+.stagger > :nth-child(4), .rail > :nth-child(4) { animation-delay: 180ms; }
+.stagger > :nth-child(5), .rail > :nth-child(5) { animation-delay: 240ms; }
+.stagger > :nth-child(n+6), .rail > :nth-child(n+6) { animation-delay: 300ms; }
+.product-card-mobile:active { transform: scale(0.98); }
+button:not(:disabled):active, a:active { transition: transform .1s; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

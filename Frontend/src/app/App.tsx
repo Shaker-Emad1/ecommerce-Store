@@ -9,6 +9,7 @@ import { AdministratorLayout } from "../components/layouts/AdministratorLayout";
 
 const HomePage = lazy(() => import("../pages/HomePage").then(m => ({ default: m.HomePage })));
 const CategoriesPage = lazy(() => import("../pages/CategoriesPage").then(m => ({ default: m.CategoriesPage })));
+const WishlistPage = lazy(() => import("../pages/WishlistPage").then(m => ({ default: m.WishlistPage })));
 const ProductsPage = lazy(() => import("../pages/ProductsPage").then(m => ({ default: m.ProductsPage })));
 const ProductDetailsPage = lazy(() => import("../pages/ProductDetailsPage").then(m => ({ default: m.ProductDetailsPage })));
 const CartPage = lazy(() => import("../pages/CartPage").then(m => ({ default: m.CartPage })));
@@ -19,9 +20,9 @@ const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard").then(m
 
 function AppLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: "#0F0F0F" }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#151210" }}>
       <div className="text-center">
-        <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin mb-4 mx-auto" style={{ borderColor: "#D4AF37", borderTopColor: "transparent" }} />
+        <div className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin mb-4 mx-auto" style={{ borderColor: "#C9A24A", borderTopColor: "transparent" }} />
         <p className="text-gray-500 text-sm" style={{ fontFamily: "'Cairo', 'Tajawal', sans-serif" }}>جاري التحميل...</p>
       </div>
     </div>
@@ -40,7 +41,9 @@ export default function App() {
                   <Route index element={<HomePage />} />
                   <Route path="categories" element={<CategoriesPage />} />
                   <Route path="products" element={<ProductsPage />} />
+                  <Route path="category/:id/:slug?" element={<ProductsPage />} />
                   <Route path="product/:id" element={<ProductDetailsPage />} />
+                  <Route path="wishlist" element={<WishlistPage />} />
                   <Route path="cart" element={<CartPage />} />
                   <Route path="checkout" element={<CheckoutPage />} />
                   <Route path="success" element={<SuccessPage />} />

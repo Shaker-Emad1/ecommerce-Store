@@ -1,20 +1,23 @@
 import { Instagram, Facebook, Twitter, Phone, MessageCircle, Mail, MapPin } from "lucide-react";
 import { GOLD, DARK_BG } from "../store/constants";
 import { useNavigate } from "react-router";
+import { getContact } from "../shared/contact";
+import { SettingDto } from "../services/settingService";
 
-export function Footer() {
+export function Footer({ storeSettings }: { storeSettings?: SettingDto | null }) {
+  const { footerPhone } = getContact(storeSettings);
   const navigate = useNavigate();
   const go = (p: string) => { navigate(p); window.scrollTo(0, 0); };
 
   return (
-    <footer style={{ background: DARK_BG, borderTop: `1px solid rgba(212,175,55,0.08)` }}>
+    <footer style={{ background: DARK_BG, borderTop: `1px solid rgba(201,162,74,0.08)` }}>
       <div className="max-w-7xl mx-auto px-4 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
           {/* Developer credit — above logo */}
           <p
             className="text-sm font-semibold mb-3 tracking-wide"
             style={{
-              background: `linear-gradient(90deg, ${GOLD}, rgba(212,175,55,0.6))`,
+              background: `linear-gradient(90deg, ${GOLD}, rgba(201,162,74,0.6))`,
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -34,7 +37,7 @@ export function Footer() {
           <p className="text-sm text-gray-500 leading-relaxed mb-5">نقدم أفضل الإكسسوارات التقنية والإلكترونية بجودة عالية وأسعار منافسة في مصر.</p>
           <div className="flex gap-2.5">
             {[Instagram, Facebook, Twitter].map((Icon, i) => (
-              <button key={i} className="w-11 h-11 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70" style={{ background: "rgba(212,175,55,0.1)", border: `1px solid rgba(212,175,55,0.15)` }}>
+              <button key={i} className="w-11 h-11 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70" style={{ background: "rgba(201,162,74,0.1)", border: `1px solid rgba(201,162,74,0.15)` }}>
                 <Icon size={17} style={{ color: GOLD }} />
               </button>
             ))}
@@ -63,8 +66,8 @@ export function Footer() {
           <h3 className="font-bold text-white mb-4 text-sm">تواصل معنا</h3>
           <div className="flex flex-col gap-3">
             {[
-              { Icon: Phone, text: "01275414542", ltr: true },
-              { Icon: MessageCircle, text: "واتساب: 01275414542", ltr: false },
+              { Icon: Phone, text: footerPhone, ltr: true },
+              { Icon: MessageCircle, text: `واتساب: ${footerPhone}`, ltr: false },
               { Icon: Mail, text: "info@asbrand.com", ltr: true },
               { Icon: MapPin, text: "القاهرة، مصر", ltr: false },
             ].map(({ Icon, text, ltr }) => (
@@ -76,7 +79,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t py-5" style={{ borderColor: "rgba(212,175,55,0.06)" }}>
+      <div className="border-t py-5" style={{ borderColor: "rgba(201,162,74,0.06)" }}>
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-gray-600">Designed &amp; Developed by Eng. Shaker Emad &copy; 2026</p>
           <div className="flex gap-5">

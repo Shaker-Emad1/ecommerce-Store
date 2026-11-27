@@ -27,7 +27,7 @@ export function SuccessPage() {
       </div>
       <h1 className="text-4xl font-black text-white mb-3">تم استلام طلبك! 🎉</h1>
       <p className="text-gray-400 mb-8 text-base">شكراً لثقتك بـ A.S Brand Store</p>
-      <div className="rounded-2xl p-6 mb-8 text-right" style={{ background: CARD, border: `1px solid rgba(212,175,55,0.15)` }}>
+      <div className="rounded-2xl p-6 mb-8 text-right" style={{ background: CARD, border: `1px solid rgba(201,162,74,0.15)` }}>
         {[
           { l: "رقم الطلب", v: `#${orderNum}`, gold: true },
           { l: "حالة الطلب", v: "قيد المعالجة", green: true },
