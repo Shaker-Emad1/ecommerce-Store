@@ -17,17 +17,17 @@ function load(): Promise<Product[]> {
 }
 
 /** Whole catalogue, fetched once and shared (small store: fast client-side filtering and search). */
-export function useCatalog() {
+export function useCatalog(enabled = true) {
   const [products, setProducts] = useState<Product[]>(cache ?? []);
   const [loading, setLoading] = useState(!cache);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     let alive = true;
-    if (!cache) {
+    if (!cache && enabled) {
       load().then((p) => alive && (setProducts(p), setLoading(false)))
         .catch((e) => alive && (setError(e?.message || "حدث خطأ أثناء تحميل المنتجات"), setLoading(false)));
     }
     return () => { alive = false; };
-  }, []);
-  return { products, loading, error };
+  }, [enabled]);
+  return { products, loading: enabled ? loading : false, error };
 }

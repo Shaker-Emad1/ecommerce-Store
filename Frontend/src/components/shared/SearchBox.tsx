@@ -8,9 +8,10 @@ import { optimizeImg } from "../../shared/img";
 
 export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...", onDone }: { placeholder?: string; onDone?: () => void }) {
   const navigate = useNavigate();
-  const { products } = useCatalog();
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
+  const [wanted, setWanted] = useState(false); // fetch the catalogue only once the user engages with search
+  const { products } = useCatalog(wanted);
   const [hi, setHi] = useState(-1);
   const box = useRef<HTMLDivElement>(null);
 
@@ -44,7 +45,7 @@ export function SearchBox({ placeholder = "ابحث عن منتج أو فئة...
         type="search"
         value={q}
         onChange={(e) => { setQ(e.target.value); setOpen(true); setHi(-1); }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => { setWanted(true); setOpen(true); }}
         onKeyDown={(e) => {
           if (e.key === "Enter") submit();
           else if (e.key === "ArrowDown") { e.preventDefault(); setHi((h) => Math.min(h + 1, results.length - 1)); }

@@ -29,12 +29,12 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
     >
       <div className="product-card-mobile__image relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
         <ProductImage src={p.image} alt={p.name} width={480} widths={[240, 480, 720]} sizes="(max-width:640px) 50vw, 25vw" />
-                <div className="absolute top-3 right-3 flex flex-col gap-1.5">
+                <div className="absolute top-2 right-2 flex flex-col gap-1">
           {p.badge && (
-            <span className="text-xs font-bold px-2 py-0.5 rounded-lg" style={{ background: GOLD, color: BG }}>{p.badge}</span>
+            <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md" style={{ background: GOLD, color: BG }}>{p.badge}</span>
           )}
           {discount > 0 && (
-            <span className="text-xs font-bold px-2 py-0.5 rounded-lg" style={{ background: "rgba(220,38,38,0.9)", color: "#fff" }}>-{discount}%</span>
+            <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-md" style={{ background: "rgba(220,38,38,0.92)", color: "#fff" }}>-{discount}%</span>
           )}
         </div>
         <button
@@ -43,7 +43,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
           aria-label={wished ? "إزالة من المفضلة" : "إضافة للمفضلة"} aria-pressed={wished}
           onClick={(e) => { e.stopPropagation(); toggleWish(); }}
         >
-          <Heart size={15} fill={wished ? "#ef4444" : "transparent"} stroke={wished ? "#ef4444" : "#fff"} />
+          <Heart size={14} fill={wished ? "#ef4444" : "transparent"} stroke={wished ? "#ef4444" : "#fff"} />
         </button>
       </div>
       <div className="product-card-mobile__body flex flex-col flex-1">

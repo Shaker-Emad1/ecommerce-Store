@@ -12,7 +12,7 @@ type Props = {
 };
 
 // Photos keep their own proportions; only extreme shapes are boxed (and edge-filled) so nothing is cropped.
-const MIN_RATIO = 0.6;
+const MIN_RATIO = 0.75;
 const MAX_RATIO = 1.8;
 
 const rgb = (c: number[]) => `rgb(${c[0]},${c[1]},${c[2]})`;
