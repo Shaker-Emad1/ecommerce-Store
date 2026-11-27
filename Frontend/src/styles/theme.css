@@ -257,7 +257,7 @@
 }
 
 .product-card-mobile__image {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   height: auto;
 }
 
@@ -296,7 +296,7 @@
   }
 
   .product-card-mobile__image {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     height: auto;
   }
 
@@ -354,3 +354,17 @@
 
 
 
+
+/* Whole-photo frame: image is contained, surrounding space uses the photo's edge colours */
+.product-image-frame {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+.product-image-frame__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}

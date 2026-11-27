@@ -5,6 +5,7 @@ import { Minus, Plus, Search } from "lucide-react";
 import { StarRating } from "../components/shared/StarRating";
 import { GoldBtn } from "../components/shared/GoldBtn";
 import { SectionTitle } from "../components/shared/SectionTitle";
+import { ProductImage } from "../components/shared/ProductImage";
 import { ShareButton } from "../components/shared/ShareButton";
 import { ProductCard } from "../components/shared/ProductCard";
 import { ProductImageViewer } from "../components/shared/ProductImageViewer";
@@ -92,7 +93,7 @@ export function ProductDetailsPage() {
             style={{ aspectRatio: "1 / 1", maxHeight: 520, border: "1px solid rgba(212,175,55,0.08)" }}
             aria-label={`عرض صورة ${product.name} بالحجم الكامل`}
           >
-            <img loading="eager" src={optimizeImg(productImages[activeImg],900)} fetchPriority="high" alt={product.name} className="product-image-stage__img product-image-stage__img--featured" />
+            <ProductImage src={productImages[activeImg]} alt={product.name} width={900} widths={[480, 900, 1200]} sizes="(max-width:1024px) 100vw, 50vw" eager />
             <span
               className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold text-white transition-all duration-200 md:hover:scale-[1.03] md:hover:-translate-y-0.5 active:scale-95"
               style={{ background: "rgba(15,15,15,0.76)", border: "1px solid rgba(212,175,55,0.18)", boxShadow: "0 12px 28px rgba(0,0,0,0.24)", backdropFilter: "blur(14px)" }}

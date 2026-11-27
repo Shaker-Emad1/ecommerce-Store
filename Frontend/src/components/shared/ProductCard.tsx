@@ -1,4 +1,4 @@
-import { optimizeImg, optimizeSrcSet } from "../../shared/img";
+import { ProductImage } from "./ProductImage";
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { StarRating } from "./StarRating";
@@ -28,7 +28,7 @@ export function ProductCard({ p, onAdd, onView }: { p: Product; onAdd: (p: Produ
       style={{ background: CARD, border: `1px solid rgba(212,175,55,0.1)`, boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
     >
       <div className="product-card-mobile__image product-image-stage relative overflow-hidden cursor-pointer" onClick={() => onView(p)}>
-        <img loading="lazy" decoding="async" width={400} height={400} sizes="(max-width:640px) 50vw, 25vw" src={optimizeImg(p.image,480)} srcSet={optimizeSrcSet(p.image,[240,480,720])} alt={p.name} className="product-image-stage__img transition-transform duration-500" />
+        <ProductImage src={p.image} alt={p.name} width={480} widths={[240, 480, 720]} sizes="(max-width:640px) 50vw, 25vw" />
                 <div className="absolute top-3 right-3 flex flex-col gap-1.5">
           {p.badge && (
             <span className="text-xs font-bold px-2 py-0.5 rounded-lg" style={{ background: GOLD, color: BG }}>{p.badge}</span>
